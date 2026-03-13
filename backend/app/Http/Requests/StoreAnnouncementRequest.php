@@ -28,7 +28,19 @@ class StoreAnnouncementRequest extends FormRequest
             'event_date'  => ['nullable', 'date'],
             'location'    => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'image'       => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'image' => [
+                'nullable',
+                'image',
+                'mimes:jpeg,png,jpg,gif',
+                'max:2048',
+            ],
+
+            // image link
+            'image_url' => [
+                'nullable',
+                'url',
+                'max:2048',
+            ],
         ];
     }
 }

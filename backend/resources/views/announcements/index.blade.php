@@ -52,8 +52,8 @@
                                 <!-- Image -->
                                 <td class="px-6 py-4">
                                     <img 
-                                        src="{{ asset('storage/'. $announcement->image) }}"
-                                        class="w-12 h-12 object-cover"
+                                        src="{{ $announcement->image_url }}"
+                                        class="w-12 h-12 object-cover {{ $announcement->image_url ? '' : 'hidden' }}"
                                     />
                                 </td>
                                 <!-- Date -->

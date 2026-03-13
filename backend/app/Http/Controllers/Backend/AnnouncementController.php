@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAnnouncementRequest;
-use App\Models\Announcements;
+use App\Models\Announcement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,7 +12,7 @@ class AnnouncementController extends Controller
 {
     public function index()
     {
-        $announcements = Announcements::all();
+        $announcements = Announcement::all();
 
         return view('announcements.index', compact('announcements'));
     }
@@ -35,19 +35,21 @@ class AnnouncementController extends Controller
 
         if($request->hasFile('image')){
             $data['image'] = $request->file('image')->store('announcements');
+        } elseif($request->image_url) {
+            $data['image'] = $request->image_url;
         }
 
-        Announcements::create($data);
+        Announcement::create($data);
 
         return to_route('announcements.index')->with('success','Announcement added.');
     }
 
-    public function edit(Announcements $announcement)
+    public function edit(Announcement $announcement)
     {
         return view('announcements.edit', compact('announcement'));
     }
 
-    public function update(Request $request, Announcements $announcement)
+    public function update(Request $request, Announcement $announcement)
     {
         $request->validate([
             'title' => ['required', 'string', 'max:255'],
@@ -59,9 +61,8 @@ class AnnouncementController extends Controller
         ]);
 
         $image = $announcement->image;
-        if ($request->hasFile('image')) {
-            Storage::delete($announcement->image);
-            $image = $request->file('image')->store('announcements');
+        if ($announcement->image && !str_starts_with($announcement->image, 'http')) {
+            Storage::disk('public')->delete($announcement->image);
         }
 
         $announcement->update([
@@ -77,9 +78,11 @@ class AnnouncementController extends Controller
         return to_route('announcements.index')->with('success','Announcement updated.');
     }
 
-    public function destroy(Announcements $announcement)
+    public function destroy(Announcement $announcement)
     {
-        Storage::delete($announcement->image);
+        if ($announcement->image && !str_starts_with($announcement->image, 'http')) {
+            Storage::disk('public')->delete($announcement->image);
+        }
         $announcement->delete();
 
         return back()->with('danger','Announcement deleted.');
