@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+:root {
+  --background: #F3F4F6;
+  --foreground: #222222;
+  --accent-green : #a2e861;
+  --accent-green-text : #74ca1a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent-green);
+  --color-accent-text: var(--accent-green-text);
+  --color-primary: var(--accent-foreground);
+
+  --font-inter: var(--font-inter);
+  --font-manrope: var(--font-manrope);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #222222;
+    --foreground: #F3F4F6;
+  }
+}
+
+@media (max-width: 1280px) {
+    html {
+        scrollbar-width: none;
+        overflow-y: scroll;
+    }
+
+    html::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+@keyframes colorSweep {
+    from { background-size: 0% 100%; }
+    to { background-size: 100% 100%; }
+}
+
+.text-sweep {
+    background-image: linear-gradient(to right, #9CA3AF, #a2e861);
+    background-repeat: no-repeat;
+    background-size: 0% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: colorSweep 1.2s ease forwards;
+}
+
+* {
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+@layer utilities {
+    .navbar {
+        @apply fixed top-0 left-0 hidden lg:grid bg-background w-full h-24 py-4 grid-cols-1 gap-4 md:grid-cols-[1fr_3fr_1fr] items-center z-50;
+    }
+
+    .button-primary {
+        @apply flex items-center justify-center text-xs 2xl:text-base leading-tight font-inter text-primary;
+    }
+
+    .button-secondary {
+        @apply bg-accent px-2 py-2 2xl:py-3 2xl:px-6 flex items-center justify-center text-sm 2xl:text-base leading-tight font-inter text-primary rounded-full hover:bg-accent/70 transition-all duration-300;
+    }
+
+    h1 {
+        @apply text-6xl font-inter
+    }
+
+    .text-body {
+        @apply text-primary text-sm xl:text-base font-inter whitespace-break-spaces;
+    }
+
+    .text-section-title {
+        @apply text-primary text-xs xl:text-sm font-manrope font-semibold tracking-tighter;
+    }
+
+    .text-description {
+        @apply text-sm xl:text-base font-inter text-foreground/80
+    }
+}
