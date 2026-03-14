@@ -2,7 +2,7 @@ import React from 'react'
 
 const SectionTemplate = ({ sectionTitle, title, description, promotion, content } ) => {
     return (
-        <div className="w-full h-auto flex flex-col mt-16 xl:mt-40 py-4">
+        <div className="w-full h-auto flex flex-col mt-8 xl:mt-40 py-4">
             <div className="inline-flex mb-10">
                 <svg className="fill-accent w-4 h-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                     <g>

@@ -71,19 +71,19 @@ const ListItem = ({ item }) => {
                 <p className="font-semibold text-base font-manrope text-primary">{item.title}</p>
                 <AddButton open={open} setOpen={setOpen} />
             </div>
-            <div className={`overflow-hidden flex flex-col xl:flex-row gap-4 transition-all duration-300 ease-in-out ${open ? 'max-h-96 pb-4' : 'max-h-0'}`}>
+            <div className={`overflow-hidden flex flex-col xl:flex-row xl:justify-between gap-4 transition-all duration-300 ease-in-out ${open ? 'max-h-126 pb-4' : 'max-h-0'}`}>
                 <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-2 text-sm text-foreground/60 font-inter">
+                    <div className="flex items-center gap-2 text-sm text-foreground/60 font-inter overflow-hidden">
                         <span>📅</span>
                         <p>{formatDate(item.event_date)}</p>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-foreground/60 font-inter">
+                    <div className="flex items-center gap-2 text-sm text-foreground/60 font-inter overflow-hidden">
                         <span>📍</span>
                         <p>{item.location}</p>
                     </div>
-                    <p className="text-sm text-foreground/80 mt-1 font-inter">{item.description}</p>
+                    <p className="text-sm text-foreground/80 mt-1 font-inter overflow-hidden">{item.description}</p>
                 </div>
-                <div className={`relative h-auto min-h-48 w-1/3 rounded-2xl ${item.image === null ? 'hidden' : 'block'}`}>
+                <div className={`relative h-auto aspect-square w-1/2 lg:max-w-1/3 xl:max-w-1/4 rounded-2xl ${item.image === null ? 'hidden' : 'block'}`}>
                     {item.image && (
                         <Image src={item.image} alt={item.title} fill className="object-cover" />
                     )}

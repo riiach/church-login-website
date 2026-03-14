@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from "next/image";
 
 const images = [
@@ -14,6 +14,14 @@ const Carousel = () => {
 
     const prev = () => setCurrent(current === 0 ? images.length - 1 : current - 1);
     const next = () => setCurrent(current === images.length - 1 ? 0 : current + 1);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrent((prev) =>
+                prev === images.length - 1 ? 0 : prev + 1
+            );
+        }, 7000)
+    }, []);
 
     return (
         <div className="relative w-full h-96 rounded-2xl overflow-hidden">

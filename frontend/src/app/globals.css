@@ -75,7 +75,7 @@ body {
     }
 
     h1 {
-        @apply text-6xl font-inter
+        @apply text-4xl md:text-6xl font-inter
     }
 
     .text-body {
