@@ -5,6 +5,8 @@ import Image from "next/image"
 export default function LoginForm() {
 
     const handlePlanningCenterLogin = () => {
+        console.log("BACKEND:", process.env.NEXT_PUBLIC_BACKEND_URL)
+
         window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/planning-center/redirect`
     }
 
