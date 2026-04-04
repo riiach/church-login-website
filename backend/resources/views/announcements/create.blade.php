@@ -7,8 +7,11 @@
 
     <div class="py-8 px-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-white shadow-md rounded-md">
+            <p class="pt-4 px-4 text-sm text-gray-500">
+                * Required Field
+            </p>
             <!-- Form -->
-            <form method="POST" action="{{ route('announcements.store') }}" class="p-4" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('admin.announcements.store') }}" class="p-4" enctype="multipart/form-data">
                 @csrf
 
                 <!-- Title -->
@@ -32,9 +35,14 @@
                             Regular Announcement
                         </option>
 
-                        <option value="childrens_ministry"
+                        <option value="childrens_ministry_announcement"
+                            {{ old('category') == 'childrens_ministry_announcement' ? 'selected' : '' }}>
+                            Children's Ministry Announcement
+                        </option>
+
+                        <option value="childrens_ministry_general"
                             {{ old('category') == 'childrens_ministry' ? 'selected' : '' }}>
-                            Children's Ministry
+                            Children's Ministry General
                         </option>
 
                     </select>
@@ -51,6 +59,47 @@
                     type="date"
                     name="event_date"
                     :value="old('event_date')"
+                />
+
+                <x-input-label for="due_date" value="Due Date" class="mt-2" />
+
+                <x-text-input
+                    id="due_date"
+                    class="block mt-1 w-full"
+                    type="date"
+                    name="due_date"
+                    :value="old('due_date')"
+                />
+
+                <x-input-label for="end_date" value="End Date" class="mt-2" />
+
+                <x-text-input
+                    id="end_date"
+                    class="block mt-1 w-full"
+                    type="date"
+                    name="end_date"
+                    :value="old('end_date')"
+                />
+
+                <!-- Time -->
+                <x-input-label for="start_time" value="Start Time" class="mt-2" />
+
+                <x-text-input
+                    id="start_time"
+                    class="block mt-1 w-full"
+                    type="time"
+                    name="start_time"
+                    :value="old('start_time')"
+                />
+
+                <x-input-label for="end_time" value="End Time" class="mt-2" />
+
+                <x-text-input
+                    id="end_time"
+                    class="block mt-1 w-full"
+                    type="time"
+                    name="end_time"
+                    :value="old('end_time')"
                 />
 
                 <!-- Location -->
@@ -89,16 +138,18 @@
                 </div>
 
                 <!-- Image URL -->
-                <x-input-label for="image_url" value="OR Image URL" class="mt-2" />
+                <div class="mt-4">
+                    <x-input-label for="image_url" value="OR Image URL" />
 
-                <x-text-input
-                    id="image_url"
-                    class="block mt-1 w-full"
-                    type="text"
-                    name="image_url"
-                    :value="old('image_url')"
-                    placeholder="https://example.com/image.jpg"
-                />
+                    <x-text-input
+                        id="image_url"
+                        class="block mt-1 w-full"
+                        type="text"
+                        name="image_url"
+                        :value="old('image_url')"
+                        placeholder="https://example.com/image.jpg"
+                    />
+                </div>
 
                 <!-- Button -->
                 <div class="flex items-center justify-end mt-4">

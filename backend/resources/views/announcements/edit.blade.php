@@ -7,8 +7,11 @@
 
     <div class="py-8 px-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-white shadow-md rounded-md">
+            <p class="pt-4 px-4 text-sm text-gray-500">
+                * Required Field
+            </p>
             <!-- Form -->
-            <form method="POST" action="{{ route('announcements.update', $announcement->id) }}" class="p-4" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('admin.announcements.update', $announcement->id) }}" class="p-4" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -35,9 +38,14 @@
                             Regular Announcement
                         </option>
 
-                        <option value="childrens_ministry"
+                        <option value="childrens_ministry_announcement"
                             {{ old('category', $announcement->category) == 'childrens_ministry' ? 'selected' : '' }}>
-                            Children's Ministry
+                            Children's Ministry Announcement
+                        </option>
+
+                        <option value="childrens_ministry_general"
+                            {{ old('category', $announcement->category) == 'childrens_ministry_general' ? 'selected' : '' }}>
+                            Children's Ministry General
                         </option>
 
                     </select>
@@ -54,6 +62,46 @@
                                     :value="old('event_date', $announcement->event_date)"
                     />
                 </div>
+
+                <div class="mt-4">
+                    <x-input-label for="due_date" :value="__('Due Date')" />
+                    <x-text-input id="due_date" class="block mt-1 w-full"
+                                    type="date"
+                                    name="due_date"
+                                    :value="old('due_date', $announcement->due_date)"
+                    />
+                </div>
+
+                <x-input-label for="end_date" :value="__('End Date')" class="mt-2" />
+
+                <x-text-input
+                    id="end_date"
+                    class="block mt-1 w-full"
+                    type="date"
+                    name="end_date"
+                    :value="old('end_date', $announcement->end_date)"
+                />
+
+                <!-- Time -->
+                <x-input-label for="start_time" :value="__('Start Time')" class="mt-2" />
+
+                <x-text-input
+                    id="start_time"
+                    class="block mt-1 w-full"
+                    type="time"
+                    name="start_time"
+                    :value="old('start_time', $announcement->start_time)"
+                />
+
+                <x-input-label for="end_time" :value="__('End Time')" class="mt-2" />
+
+                <x-text-input
+                    id="end_time"
+                    class="block mt-1 w-full"
+                    type="time"
+                    name="end_time"
+                    :value="old('end_time', $announcement->end_time)"
+                />
 
                 <!-- Location -->
                 <div class="mt-4">
@@ -80,16 +128,30 @@
                         placeholder="This field can be empty.">{{ old('description', $announcement->description) }}</textarea>
                 </div>
 
-                <!-- Image -->
+                <!-- Image Upload -->
                 <div class="mt-4">
-                    <x-input-label for="image" :value="__('* Image')" />
+                    <x-input-label for="image" value="Image Upload" />
 
-                    <x-text-input id="image" class="block mt-1 w-full"
-                                    type="file"
-                                    name="image"
+                    <x-text-input 
+                        id="image"
+                        class="block mt-1 w-full"
+                        type="file"
+                        name="image"
                     />
+                </div>
 
-                    <x-input-error :messages="$errors->get('image')" class="mt-2" />
+                <!-- Image URL -->
+                <div class="mt-4">
+                    <x-input-label for="image_url" value="OR Image URL" />
+
+                    <x-text-input
+                        id="image_url"
+                        class="block mt-1 w-full"
+                        type="text"
+                        name="image_url"
+                        :value="old('image_url')"
+                        placeholder="https://example.com/image.jpg"
+                    />
                 </div>
 
                 <!-- Button -->

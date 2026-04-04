@@ -10,9 +10,17 @@ class Announcement extends Model
         'title',
         'category',
         'event_date',
+        'due_date',
+        'end_date',
+        'start_time',
+        'end_time',
         'location',
         'description',
         'image'
+    ];
+
+    protected $casts = [
+        'due_date' => 'date:Y-m-d',
     ];
 
     // Automatically include image_url in API responses

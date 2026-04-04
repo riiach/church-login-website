@@ -1,0 +1,119 @@
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Create Event
+        </h2>
+    </x-slot>
+
+    <div class="py-8 px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-white shadow-md rounded-md">
+            <p class="pt-4 px-4 text-sm text-gray-500">
+                * Required Field
+            </p>
+            <!-- Form -->
+            <form method="POST" action="{{ route('admin.events.store') }}" class="p-4" enctype="multipart/form-data">
+                @csrf
+
+                <!-- Title -->
+                <div>
+                    <x-input-label for="title" :value="__('* Title')" />
+                    <x-text-input id="title" class="block mt-1 w-full" type="text" name="title" :value="old('title')" autofocus />
+                    <x-input-error :messages="$errors->get('title')" class="mt-2" />
+                </div>
+
+                <!-- Date -->
+                <x-input-label for="event_date" value="Event Date" class="mt-2" />
+
+                <x-text-input
+                    id="event_date"
+                    class="block mt-1 w-full"
+                    type="date"
+                    name="event_date"
+                    :value="old('event_date')"
+                />
+
+                <!-- Due Date -->
+                <x-input-label for="due_date" value="Due Date" class="mt-2" />
+                <p class="text-sm text-gray-500">Add a due date for the event - It will automatically close registrations after this date.</p>
+                <x-text-input
+                    id="due_date"
+                    class="block mt-1 w-full"
+                    type="date"
+                    name="due_date"
+                    :value="old('due_date')"
+                />
+
+                <!-- Location -->
+                <x-input-label for="location" value="Location" class="mt-2"/>
+
+                <x-text-input
+                    id="location"
+                    class="block mt-1 w-full"
+                    type="text"
+                    name="location"
+                    :value="old('location')"
+                />
+
+                <!-- Description -->
+                <x-input-label for="description" value="Description" class="mt-2"/>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="8"
+                    class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm
+                    focus:ring-blue-500 focus:border-blue-500 text-sm text-gray-900 p-2.5"
+                    placeholder="This field can be empty."
+                >{{ old('description') }}</textarea>
+
+                <!-- Max Slots -->
+                <x-input-label for="max_slots" value="Max Slots" class="mt-2"/>
+
+                <x-text-input
+                    id="max_slots"
+                    class="block mt-1 w-full"
+                    type="number"
+                    name="max_slots"
+                    :value="old('max_slots')"
+                    min="1"
+                />
+
+                <!-- Image Upload -->
+                <div class="mt-4">
+                    <x-input-label for="image" value="* Image Upload" />
+
+                    <x-text-input 
+                        id="image"
+                        class="block mt-1 w-full"
+                        type="file"
+                        name="image"
+                    />
+                    <x-input-error :messages="$errors->get('image')" class="mt-2" />
+                </div>
+
+                <!-- Image URL -->
+                <div class="mt-4">
+                    <x-input-label for="image_url" value="* OR Image URL" />
+
+                    <x-text-input
+                        id="image_url"
+                        class="block mt-1 w-full"
+                        type="text"
+                        name="image_url"
+                        :value="old('image_url')"
+                        placeholder="https://example.com/image.jpg"
+                    />
+
+                    <x-input-error :messages="$errors->get('image_url')" class="mt-2" />
+                </div>
+
+                <!-- Button -->
+                <div class="flex items-center justify-end mt-4">
+                    <x-primary-button class="ms-3">
+                        Store
+                    </x-primary-button>
+                </div>
+            </form>
+        </div>
+    </div>
+</x-app-layout>

@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('heroes', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('events', function (Blueprint $table) {
+            $table->date('due_date')->nullable()->change();
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('heroes');
+        Schema::table('events', function (Blueprint $table) {
+            $table->timestamp('due_date')->nullable()->change();
+        });
     }
 };

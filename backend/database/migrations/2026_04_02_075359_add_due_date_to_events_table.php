@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('series', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('events', function (Blueprint $table) {
+            $table->date('due_date')->nullable()->after('event_date');
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('series');
+        Schema::table('events', function (Blueprint $table) {
+            //
+        });
     }
 };
