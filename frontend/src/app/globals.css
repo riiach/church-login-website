@@ -1,10 +1,16 @@
 @import "tailwindcss";
+@variant dark (&:where(.dark, .dark *));
 
 :root {
   --background: #F3F4F6;
   --foreground: #222222;
   --accent-green : #a2e861;
   --accent-green-text : #74ca1a;
+}
+
+.dark {
+    --background: #222222;
+    --foreground: #F3F4F6;
 }
 
 @theme inline {
@@ -41,6 +47,29 @@
     to { background-size: 100% 100%; }
 }
 
+@keyframes reveal-down {
+    0%   { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes card-animation {
+    from {
+        transform: translate(0, 0);
+    }
+    to {
+        transform: translate(-4px, -4px);
+    }
+}
+
+@keyframes progress {
+    from { width: 100%; }
+    to { width: 0%; }
+}
+
+.reveal-down {
+    animation: reveal-down 0.6s ease-out forwards;
+}
+
 .text-sweep {
     background-image: linear-gradient(to right, #9CA3AF, #a2e861);
     background-repeat: no-repeat;
@@ -48,7 +77,14 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+}
+
+.active {
     animation: colorSweep 1.2s ease forwards;
+}
+
+.card:hover {
+    animation: card-animation 0.6s ease forwards;
 }
 
 * {
@@ -59,6 +95,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
+  font-family: inter;
 }
 
 @layer utilities {
@@ -74,8 +111,24 @@ body {
         @apply bg-accent px-2 py-2 2xl:py-3 2xl:px-6 flex items-center justify-center text-sm 2xl:text-base leading-tight font-inter text-primary rounded-full hover:bg-accent/70 transition-all duration-300;
     }
 
+    .button-tertiary {
+        @apply flex items-center justify-center shrink-0 relative z-20 bg-foreground/10 rounded-full transition-all duration-300 ease-in-out;
+    }
+
+    .button-fourth {
+        @apply px-4 py-2 border border-gray-400 rounded-full;
+    }
+
+    hr {
+        @apply border-gray-400;
+    }
+
     h1 {
         @apply text-4xl md:text-6xl font-inter
+    }
+
+    p {
+        @apply text-sm text-foreground/80 font-inter overflow-hidden;
     }
 
     .text-body {
@@ -86,7 +139,19 @@ body {
         @apply text-primary text-xs xl:text-sm font-manrope font-semibold tracking-tighter;
     }
 
+    .text-subtitle {
+        @apply font-semibold text-2xl font-manrope tracking-tight text-foreground;
+    }
+
     .text-description {
-        @apply text-sm xl:text-base font-inter text-foreground/80
+        @apply text-sm xl:text-base font-inter text-foreground/70
+    }
+
+    .menu {
+        @apply font-bold font-manrope text-[#222222]
+    }
+
+    .subMenu {
+        @apply font-inter text-sm text-[#222222]
     }
 }

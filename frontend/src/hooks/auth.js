@@ -1,68 +1,88 @@
+"use client";
 
-import {useEffect, useState} from "react";
-import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import axios from "../lib/axios";
 
 export const useAuth = ({ middleware } = {}) => {
     const router = useRouter();
-    
-    // Loading
     const [isLoading, setLoading] = useState(true);
 
-    // User
-    const {data: user, error, mutate } = useSWR("/api/v1/user",
-        () => axios
-                        .get("/api/v1/user")
-                        .then(res => res.data.data)
-                        .catch(err => {
-                            if(error.response.status !== 409)
-                                throw error
-                        }),
-    );
+    const fetcher = async () => {
+        try {
+            const res = await axios.get("/api/user", {
+                withCredentials: true,
+            });
+            return res.data.data;
+        } catch (error) {
+            if (error.response?.status === 401) return null;
+            throw error;
+        }
+    };
 
-    // CSRF
-    const csrf = () => axios.get("/sanctum/csrf-cookie");
+    const { data: user, error, mutate } = useSWR("/api/user", fetcher);
+
+    const csrf = () =>
+        axios.get("/sanctum/csrf-cookie", { withCredentials: true });
 
     // Login
-    const login = async ({setErrors, ...props}) => {
+    const login = async ({ setErrors, ...props }) => {
         setErrors([]);
 
         await csrf();
 
-        axios
-        .post("/login", props)
-        .then(() => mutate() && router.push('/dashboard'))
-        .catch(error => {
-             if (error.response.status !== 422) throw error
+        try {
+            await axios.post("/api/login", props, {
+                withCredentials: true,
+            });
 
-             setErrors(Object.values(error.response.data.errors).flat())
-        })
-    }
+            await mutate();
+            router.replace("/user/dashboard");
+        } catch (error) {
+            if (error.response?.status !== 422) throw error;
+
+            setErrors(Object.values(error.response.data.errors).flat());
+        }
+    };
 
     // Logout
     const logout = async () => {
-        await axios.post("/logout");
+        try {
+            await csrf();
 
-        mutate(null);
+            // Web-session logout endpoint for Planning Center flow.
+            await axios.post("/logout", {}, { withCredentials: true });
 
-        router.push("/");
-    }
+            // Immediately clear cached user and avoid stale UI state.
+            await mutate(null, false);
+
+            router.replace("/");
+        } catch (error) {
+            console.error("Logout error:", error);
+        }
+    };
 
     useEffect(() => {
-        if (user || error) {
-            setIsLoading(false);
+        if (user === undefined) return;
+
+        setLoading(false);
+
+        if (middleware === "guest" && user) {
+            router.push("/");
         }
 
-        if(middleware === "guest" && user) router.push("/");
-        if (middleware === "auth" && error) router.push("login");
-    })
-    
+        // ✅ FIX: redirect to real page, not API
+        if (middleware === "auth" && user === null) {
+            router.push("/login");
+        }
+    }, [user, middleware, router]);
+
     return {
         user,
         csrf,
         isLoading,
         login,
-        logout
-    }
-}
+        logout,
+    };
+};

@@ -17,6 +17,10 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: 'salmon-kingfisher-952621.hostingersite.com'
+            },
+            {
+                protocol: 'https',
+                hostname: 'avatars.planningcenteronline.com',
             }
         ],
     },

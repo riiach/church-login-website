@@ -1,6 +1,10 @@
 import { Inter, Manrope } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import {PCUserProvider} from "@/context/profile";
+import Footer from "@/components/Footer";
+import { ThemeProvider } from "next-themes";
+import Social from "@/components/Social";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -23,8 +27,18 @@ export default function RootLayout({ children }) {
       <body
         className={`${inter.variable} ${manrope.variable} antialiased`}
       >
-        <Navbar />
-        {children}
+        <ThemeProvider attribute="class">
+            <PCUserProvider>
+                <div className="min-h-screen flex flex-col">
+                    <Navbar />
+                    <Social />
+                    <main className="flex-1">
+                        {children}
+                    </main>
+                    <Footer />
+                </div>
+            </PCUserProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

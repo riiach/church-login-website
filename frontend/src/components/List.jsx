@@ -3,59 +3,39 @@
 import React, { useState } from 'react'
 import Image from "next/image";
 
-/*
-const mockData = [
-    {
-        title: "Sunday Worship Service",
-        description: "Join us for a time of worship, prayer, and the Word. All are welcome to come and experience God's presence together as a community.",
-        eventDate: "2024-03-17",
-        location: "Main Sanctuary, 2nd Floor",
-        image: "https://images.pexels.com/photos/16718734/pexels-photo-16718734.jpeg"
-    },
-    {
-        title: "Youth Bible Study",
-        description: "A weekly gathering for teens and young adults to dive deep into Scripture, ask questions, and grow together in faith.",
-        eventDate: "2024-03-19",
-        location: "Room 204, Education Building",
-        image: null
-    },
-    {
-        title: "Community Outreach Day",
-        description: "We will be serving our local neighborhood through food distribution, cleanup, and sharing the love of Christ in practical ways.",
-        eventDate: "2024-03-23",
-        location: "City Park, Main Entrance",
-        image: null
-    },
-    {
-        title: "Easter Sunday Celebration",
-        description: "Celebrate the resurrection of Jesus Christ with special music, a powerful message, and a time of fellowship with your church family.",
-        eventDate: "2024-03-31",
-        location: "Main Sanctuary, 2nd Floor",
-        image: null
-    },
-    {
-        title: "Women's Prayer Breakfast",
-        description: "A morning of prayer, worship, and encouragement for all women of the church. Breakfast will be provided. Come expecting a move of God.",
-        eventDate: "2024-04-06",
-        location: "Fellowship Hall, Ground Floor",
-        image: null
-    },
-];
- */
+const formatTime = (time) => {
+    if (!time) return null;
+    const [h, m] = time.split(":");
+    const date = new Date();
+    date.setHours(h, m);
+    return date.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+};
 
-const formatDate = (dateStr) => {
-    return new Date(dateStr).toLocaleDateString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
+const formatEvent = (event) => {
+    const startDate = event.event_date ? new Date(event.event_date) : null;
+    const endDate = event.end_date ? new Date(event.end_date) : null;
+
+    const dateOptions = { month: "long", day: "numeric", year: "numeric" };
+
+    const start = startDate ? startDate.toLocaleDateString("en-US", dateOptions) : null;
+    const end = endDate ? endDate.toLocaleDateString("en-US", dateOptions) : null;
+
+    const time =
+        event.start_time && event.end_time
+            ? `${formatTime(event.start_time)} – ${formatTime(event.end_time)}`
+            : null;
+
+    return {
+        date: start ? (end ? `${start} – ${end}` : start) : null,
+        time,
+        location: event.location
+    };
 };
 
 const AddButton = ({ open, setOpen }) => (
     <button
         onClick={() => setOpen(!open)}
-        className="flex items-center justify-center w-8 h-8 shrink-0 relative z-50 bg-foreground/10 rounded-full hover:drop-shadow-md transition-all duration-300 ease-in-out"
+        className="button-tertiary w-8 h-8 hover:drop-shadow-md"
     >
         <span className={`absolute block w-3 h-0.5 bg-foreground transition-all duration-300 ease-in-out ${open ? 'rotate-[135deg]' : 'rotate-0'}`} />
         <span className={`absolute block w-0.5 h-3 bg-foreground transition-all duration-300 ease-in-out ${open ? 'rotate-[135deg]' : 'rotate-0'}`} />
@@ -64,6 +44,7 @@ const AddButton = ({ open, setOpen }) => (
 
 const ListItem = ({ item }) => {
     const [open, setOpen] = useState(false);
+    const event = formatEvent(item);
 
     return (
         <div className="w-full border-b border-foreground/10">
@@ -73,11 +54,21 @@ const ListItem = ({ item }) => {
             </div>
             <div className={`overflow-hidden flex flex-col xl:flex-row xl:justify-between gap-4 transition-all duration-300 ease-in-out ${open ? 'max-h-126 pb-4' : 'max-h-0'}`}>
                 <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-2 text-sm text-foreground/60 font-inter overflow-hidden">
+                    <div className={`items-center gap-2 text-sm text-foreground/60 font-inter overflow-hidden
+                    ${item.event_date === null ? 'hidden' : 'flex'}
+                    `}>
                         <span>📅</span>
-                        <p>{formatDate(item.event_date)}</p>
+                        <p>{event.date}</p>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-foreground/60 font-inter overflow-hidden">
+                    <div className={`items-center gap-2 text-sm text-foreground/60 font-inter overflow-hidden
+                    ${item.start_time === null ? 'hidden' : 'flex'}
+                    `}>
+                        <span>⏰</span>
+                        <p>{event.time}</p>
+                    </div>
+                    <div className={`items-center gap-2 text-sm text-foreground/60 font-inter overflow-hidden
+                    ${item.location === '' ? 'hidden' : 'flex'}
+                    `}>
                         <span>📍</span>
                         <p>{item.location}</p>
                     </div>

@@ -1,13 +1,20 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useAuth } from "@/hooks/auth"
+import { usePathname } from "next/navigation";
+
 
 const NavbarDesktop = () => {
+    const { user, logout } = useAuth();
+    const pathname = usePathname();
+
     return (
         <nav className="navbar px-8 xl:px-16 2xl:px-28">
             <div className="w-auto h-full flex items-center overflow-y-hidden">
                 <Link href="/">
                     <div className="flex flex-row items-center gap-4">
+                        {/* AIM Logo */}
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306.8 305.68" className="fill-black/80 w-10 dark:fill-white">
                             <g>
                                 <g>
@@ -25,32 +32,69 @@ const NavbarDesktop = () => {
                 </Link>
             </div>
             <ul className="flex justify-center items-center gap-6 2xl:gap-8 w-auto h-full space-x-4 font-inter text-sm 2xl:text-base">
-                <li className="hover:text-accent-text transition-all duration-300">
+
+                <li className={`transition-all duration-300 ${pathname === "/" ? "text-accent-text" : "hover:text-accent-text"}`}>
                     <Link href="/">Our Mission</Link>
                 </li>
-                <li className="hover:text-accent-text transition-all duration-300">
+
+                <li className={`transition-all duration-300 ${pathname === "/visit" ? "text-accent-text" : "hover:text-accent-text"}`}>
                     <Link href="/">Visit Us</Link>
                 </li>
-                <li className="hover:text-accent-text transition-all duration-300">
+
+                <li className={`transition-all duration-300 ${pathname === "/sermons" ? "text-accent-text" : "hover:text-accent-text"}`}>
                     <Link href="/">Sermons</Link>
                 </li>
-                <li className="hover:text-accent-text transition-all duration-300">
+
+                <li className={`transition-all duration-300 ${pathname === "/join" ? "text-accent-text" : "hover:text-accent-text"}`}>
                     <Link href="/">Join Us</Link>
                 </li>
-                <li className="hover:text-accent-text transition-all duration-300">
+
+                <li className={`transition-all duration-300 ${pathname === "/announcement" ? "text-accent-text" : "hover:text-accent-text"}`}>
                     <Link href="/announcement">Announcement</Link>
                 </li>
-                <li className="hover:text-accent-text transition-all duration-300">
+
+                <li className={`transition-all duration-300 ${pathname === "/offering" ? "text-accent-text" : "hover:text-accent-text"}`}>
                     <Link href="/">Offering</Link>
                 </li>
+
             </ul>
-            <div className="w-auto h-full flex items-center justify-end">
-                <Link href="/">
-                    <button className="button-primary hover:text-accent-text transition-all duration-300 px-2 2xl:px-4">Log In</button>
-                </Link>
-                <Link href="/">
-                    <button className="button-secondary">Join the Church</button>
-                </Link>
+            <div className="w-auto h-full flex items-center justify-end pr-4">
+                {
+                    !user ? (
+                        <Link href="/login">
+                            <button className="button-primary hover:text-accent-text px-2 2xl:px-4 transition-all duration-300">
+                                Log In
+                            </button>
+                        </Link>
+                    ) : (
+                        <button onClick={logout} className="button-primary hover:text-accent-text px-2 2xl:px-4 transition-all duration-300">
+                            Log Out
+                        </button>
+                    )
+                }
+
+                {
+                    !user ? (
+                        <Link href="/login">
+                            <button className="button-secondary">Join the Church</button>
+                        </Link>
+                    ) : (
+                        <Link
+                            href="/user/dashboard"
+                            className="inline-block transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 hover:ring-2 hover:ring-offset-2 hover:ring-accent ring-offset-background rounded-full"
+                        >
+                            <div className="w-12 h-12 rounded-full overflow-hidden">
+                                <Image
+                                    src={user.profile_photo || "/profile_photo_null.png"}
+                                    alt={user.name}
+                                    width={42}
+                                    height={42}
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                        </Link>
+                    )
+                }
             </div>
         </nav>
     );

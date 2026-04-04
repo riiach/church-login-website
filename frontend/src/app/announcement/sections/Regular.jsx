@@ -17,12 +17,12 @@ const Regular = () => {
     }
 
     return (
-        <div>
+        <section id="regularAnnouncement">
             <SectionTemplate
                 sectionTitle="REGULAR ANNOUNCEMENT"
                 title={
                     <h1 className="overflow-hidden pb-2">
-                        Your weekly guide to what's happening at <span className="text-sweep">our church</span>
+                        Your weekly guide to what's happening at <span className="text-sweep active">our church</span>
                     </h1>
                 }
                 description={
@@ -40,7 +40,7 @@ const Regular = () => {
                     <List data={regularAnnouncement} />
                 }
             />
-        </div>
+        </section>
     )
 }
 export default Regular
