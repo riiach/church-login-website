@@ -20,7 +20,15 @@ export const useAuth = ({ middleware } = {}) => {
         }
     };
 
-    const { data: user, error, mutate } = useSWR("/api/user", fetcher);
+    const { data: user, error, mutate } = useSWR(
+        "/api/user",
+        fetcher,
+        {
+            revalidateOnFocus: false,
+            revalidateIfStale: false,
+            revalidateOnReconnect: false,
+        }
+    );
 
     const csrf = () =>
         axios.get("/sanctum/csrf-cookie", { withCredentials: true });

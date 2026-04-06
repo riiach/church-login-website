@@ -11,11 +11,11 @@ export default function LoginForm() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-background px-4 reveal-down">
-            <div className="flex w-1/2 max-w-4xl bg-white dark:bg-black/80 rounded-lg shadow-lg overflow-hidden">
+        <div className="min-h-screen -mt-16 xl:-mt-0 flex items-center justify-center bg-background px-4 reveal-down">
+            <div className="flex flex-col xl:flex-row w-full xl:w-1/2 max-w-4xl bg-white dark:bg-black/80 rounded-lg shadow-lg overflow-hidden">
 
                 {/* Image Section */}
-                <div className="relative hidden lg:block lg:w-1/2 min-h-[500px]">
+                <div className="relative w-full xl:block xl:w-1/2 min-h-[500px]">
                     <Image
                         src="https://images.pexels.com/photos/34442266/pexels-photo-34442266.jpeg"
                         alt="Banner"
@@ -26,7 +26,7 @@ export default function LoginForm() {
                 </div>
 
                 {/* OAuth Section */}
-                <div className="w-full lg:w-1/2 p-8 flex flex-col justify-center">
+                <div className="w-full xl:w-1/2 p-8 flex flex-col justify-center">
 
                     <h2 className="text-2xl font-semibold text-foreground text-center">
                         Welcome to AIM
@@ -36,13 +36,21 @@ export default function LoginForm() {
                         Sign in using Planning Center to continue
                     </p>
 
-                    <button
-                        onClick={handlePlanningCenterLogin}
-                        className="flex items-center justify-center w-full mt-8 border rounded-lg py-3 hover:bg-gray-50 transition"
-                    >
-                        Sign in with Planning Center
-                    </button>
+                    <div className="flex flex-col gap-2">
+                        <button
+                            onClick={handlePlanningCenterLogin}
+                            className="flex items-center justify-center w-full mt-8 border border-gray-300 rounded-lg py-3 hover:bg-foreground hover:text-accent-text transition duration-300"
+                        >
+                            Sign in with Planning Center
+                        </button>
 
+                        <button
+                            onClick={handlePlanningCenterLogin}
+                            className="flex items-center justify-center bg-accent w-full mt-2 border border-gray-300 rounded-lg py-3 hover:bg-accent/80 transition duration-300"
+                        >
+                            Register with Planning Center
+                        </button>
+                    </div>
                 </div>
 
             </div>

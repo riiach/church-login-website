@@ -1,8 +1,9 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 const Social = () => {
+    const socialRef = useRef(null);
     const [isVisible, setIsVisible] = useState(true);
 
     useEffect(() => {
@@ -12,37 +13,55 @@ const Social = () => {
         }, []);
 
     useEffect(() => {
-            let footerObserver = null;
             let mutationObserver = null;
-    
-            const connectFooterObserver = () => {
+            let animationFrame = null;
+
+            const updateVisibility = () => {
+                animationFrame = null;
+
                 const footer = document.getElementById("footer");
-    
+                const social = socialRef.current;
+
+                if (!footer || !social) {
+                    setIsVisible(true);
+                    return;
+                }
+
+                const footerRect = footer.getBoundingClientRect();
+                const socialRect = social.getBoundingClientRect();
+
+                setIsVisible(footerRect.top > socialRect.bottom);
+            };
+
+            const scheduleVisibilityUpdate = () => {
+                if (animationFrame !== null) {
+                    return;
+                }
+
+                animationFrame = window.requestAnimationFrame(updateVisibility);
+            };
+
+            const connectFooterTracking = () => {
+                const footer = document.getElementById("footer");
+
                 if (!footer) {
                     return false;
                 }
-    
-                footerObserver?.disconnect();
-    
-                footerObserver = new IntersectionObserver(
-                    ([entry]) => {
-                        setIsVisible(!entry.isIntersecting);
-                    },
-                    { threshold: 0 }
-                );
-    
-                footerObserver.observe(footer);
+
+                scheduleVisibilityUpdate();
+                window.addEventListener("scroll", scheduleVisibilityUpdate, { passive: true });
+                window.addEventListener("resize", scheduleVisibilityUpdate);
                 return true;
             };
-    
-            if (!connectFooterObserver()) {
+
+            if (!connectFooterTracking()) {
                 mutationObserver = new MutationObserver(() => {
-                    if (connectFooterObserver() && mutationObserver) {
+                    if (connectFooterTracking() && mutationObserver) {
                         mutationObserver.disconnect();
                         mutationObserver = null;
                     }
                 });
-    
+
                 if (document.body) {
                     mutationObserver.observe(document.body, {
                         childList: true,
@@ -50,16 +69,22 @@ const Social = () => {
                     });
                 }
             }
-    
+
             return () => {
-                footerObserver?.disconnect();
+                if (animationFrame !== null) {
+                    window.cancelAnimationFrame(animationFrame);
+                }
+
+                window.removeEventListener("scroll", scheduleVisibilityUpdate);
+                window.removeEventListener("resize", scheduleVisibilityUpdate);
                 mutationObserver?.disconnect();
             };
         }, []);    
 
     return (
         <div
-            className={`fixed top-24 z-49 right-0 bg-accent rounded-bl-xl rounded-tl-xl flex flex-col items-center py-2 px-2 gap-2 transition-all duration-200 ${
+            ref={socialRef}
+            className={`fixed top-24 z-50 right-0 bg-accent rounded-bl-xl rounded-tl-xl flex flex-col items-center py-2 px-2 gap-2 transition-all duration-200 ${
                 isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 pointer-events-none'
             }`}
         >

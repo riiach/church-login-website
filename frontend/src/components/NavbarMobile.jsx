@@ -1,5 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { useAuth } from '@/hooks/auth';
+
+const navItems = [
+    { href: '/', label: 'Our Mission' },
+    { href: '/', label: 'Visit Us' },
+    { href: '/', label: 'Sermons' },
+    { href: '/', label: 'Join Us' },
+    { href: '/announcement', label: 'Announcement' },
+    { href: '/', label: 'Offering' },
+];
 
 const HamburgerButton = ({ open, setOpen }) => (
     <button
@@ -24,29 +36,145 @@ const HamburgerButton = ({ open, setOpen }) => (
     </button>
 );
 
-const MobileNav = ({ open, setOpen }) => (
+const MobileNav = ({ open, setOpen, user, pathname, logout }) => (
     <div
-        className={`fixed top-0 left-0 w-full h-full bg-background z-40 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 w-full h-full bg-background z-48 transform transition-transform duration-300 ease-in-out ${
             open ? 'translate-y-0' : '-translate-y-full'
         }`}
     >
-        <div className="flex flex-col items-center justify-center h-full space-y-6">
+        <div className="flex h-full flex-col px-6 pb-8 pt-28">
+            <div className="flex flex-col items-center border-b border-foreground/10 pb-8 text-center">
+                {user ? (
+                    <>
+                        <Link
+                            href="/user/dashboard"
+                            onClick={() => setOpen(false)}
+                            className="mb-4 inline-block"
+                        >
+                            <div className="h-18 w-18 overflow-hidden rounded-full ring-2 ring-accent/20">
+                                <Image
+                                    src={user.profile_photo || '/profile_photo_null.png'}
+                                    alt={user.name}
+                                    width={72}
+                                    height={72}
+                                    className="h-full w-full object-cover"
+                                />
+                            </div>
+                        </Link>
+                        <p className="font-manrope text-lg font-semibold text-primary">{user.name}</p>
+                        <p className="mt-1 text-sm text-foreground/60">Member Dashboard</p>
+                    </>
+                ) : (
+                    <>
+                        <div className="mb-4 flex h-18 w-18 items-center justify-center rounded-full bg-accent/10 text-2xl font-semibold text-accent-text">
+                            AIM
+                        </div>
+                        <p className="font-manrope text-lg font-semibold text-primary">Welcome to AIM</p>
+                        <p className="mt-1 text-sm text-foreground/60">Sign in to access your dashboard</p>
+                    </>
+                )}
+            </div>
 
+            <div className="flex-1 overflow-y-auto py-8">
+                <ul className="flex flex-col gap-2">
+                    {navItems.map((item, index) => (
+                        <li key={`${item.label}-${index}`}>
+                            <Link
+                                href={item.href}
+                                onClick={() => setOpen(false)}
+                                className={`block rounded-2xl px-4 py-3 font-inter text-lg transition-all duration-300 ${
+                                    pathname === item.href
+                                        ? 'bg-background text-accent-text'
+                                        : 'text-foreground hover:bg-accent/10 hover:text-accent-text'
+                                }`}
+                            >
+                                {item.label}
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            <div className="border-t border-foreground/10 pt-6">
+                {user ? (
+                    <div className="flex flex-col gap-3">
+                        <Link
+                            href="/user/dashboard"
+                            onClick={() => setOpen(false)}
+                            className="button-primary hover:bg-foreground hover:text-accent-text !text-base !border !rounded-2xl border-gray-300 !py-4 w-full text-center transition-all duration-300"
+                        >
+                            My Dashboard
+                        </Link>
+                        <button
+                            onClick={async () => {
+                                setOpen(false);
+                                await logout();
+                            }}
+                            className="button-secondary dark:!text-background !text-base !border !rounded-2xl border-gray-300 !py-4 w-full text-center transition-all duration-300"
+                        >
+                            Log Out
+                        </button>
+                    </div>
+                ) : (
+                    <div className="flex flex-col gap-2">
+                        <Link
+                            href="/login"
+                            onClick={() => setOpen(false)}
+                            className="button-primary hover:bg-foreground hover:text-accent-text !text-base !border !rounded-2xl border-gray-300 !py-4 w-full text-center transition-all duration-300"
+                        >
+                            Log In
+                        </Link>
+                        <Link
+                            href="/login"
+                            onClick={() => setOpen(false)}
+                            className="button-secondary dark:!text-background !text-base !border !rounded-2xl border-gray-300 !py-4 w-full text-center transition-all duration-300"
+                        >
+                            Register
+                        </Link>
+                    </div>
+                )}
+            </div>
         </div>
     </div>
 );
 
 const NavbarMobile = () => {
     const [open, setOpen] = useState(false);
+    const { user, logout } = useAuth();
+    const pathname = usePathname();
+
+    useEffect(() => {
+        const previousBodyOverflow = document.body.style.overflow;
+        const previousHtmlOverflow = document.documentElement.style.overflow;
+
+        if (open) {
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = previousBodyOverflow;
+            document.documentElement.style.overflow = previousHtmlOverflow;
+        }
+
+        return () => {
+            document.body.style.overflow = previousBodyOverflow;
+            document.documentElement.style.overflow = previousHtmlOverflow;
+        };
+    }, [open]);
 
     return (
         <>
             {/* Mobile Navigation */}
-            <MobileNav open={open} setOpen={setOpen} />
+            <MobileNav
+                open={open}
+                setOpen={setOpen}
+                user={user}
+                pathname={pathname}
+                logout={logout}
+            />
 
             {/* Navbar */}
             <div className="w-full h-22 flex justify-between items-center px-4 py-2 bg-background relative z-50">
-                <Link href="/">
+                <Link href="/" onClick={() => setOpen(false)}>
                     <div className="flex items-center gap-4">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 306.8 305.68" className="fill-black/80 w-10 dark:fill-white">
                             <g>
