@@ -36,7 +36,9 @@ Route::get('/pc/groups', [PlanningCenterController::class, 'groups']);
 
 // Event registration routes
 Route::get('/users/{userId}/registered-events', [EventRegistrationController::class, 'registeredEvents']);
-Route::post('/events/{eventId}/register', [EventRegistrationController::class, 'register']);
+Route::post('/events/{eventId}/register', [EventRegistrationController::class, 'register'])
+    ->middleware('frontend.origin');
 Route::get('/events/{eventId}/remaining-slots', [EventRegistrationController::class, 'remainingSlots']);
 Route::get('/events/{eventId}/check-registration/{userId}', [EventRegistrationController::class, 'checkRegistration']);
-Route::post('/events/{eventId}/unregister', [EventRegistrationController::class, 'unregister']);
+Route::post('/events/{eventId}/unregister', [EventRegistrationController::class, 'unregister'])
+    ->middleware('frontend.origin');
