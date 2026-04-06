@@ -120,7 +120,7 @@ export default function SectionNavigator({ sections = [] }) {
 
     return (
         <div
-            className={`fixed bottom-8 left-8 z-50 transition-opacity duration-300 ${
+            className={`fixed bottom-8 left-8 z-49 transition-opacity duration-300 ${
                 isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
             onMouseEnter={() => setIsOpen(true)}

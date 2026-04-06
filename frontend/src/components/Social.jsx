@@ -1,10 +1,68 @@
 "use client"
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Social = () => {
+    const [isVisible, setIsVisible] = useState(true);
+
+    useEffect(() => {
+            // Prevent scrollbars caused by fixed-positioned children overflowing
+            document.body.style.overflowX = "hidden";
+            return () => { document.body.style.overflowX = ""; };
+        }, []);
+
+    useEffect(() => {
+            let footerObserver = null;
+            let mutationObserver = null;
+    
+            const connectFooterObserver = () => {
+                const footer = document.getElementById("footer");
+    
+                if (!footer) {
+                    return false;
+                }
+    
+                footerObserver?.disconnect();
+    
+                footerObserver = new IntersectionObserver(
+                    ([entry]) => {
+                        setIsVisible(!entry.isIntersecting);
+                    },
+                    { threshold: 0 }
+                );
+    
+                footerObserver.observe(footer);
+                return true;
+            };
+    
+            if (!connectFooterObserver()) {
+                mutationObserver = new MutationObserver(() => {
+                    if (connectFooterObserver() && mutationObserver) {
+                        mutationObserver.disconnect();
+                        mutationObserver = null;
+                    }
+                });
+    
+                if (document.body) {
+                    mutationObserver.observe(document.body, {
+                        childList: true,
+                        subtree: true,
+                    });
+                }
+            }
+    
+            return () => {
+                footerObserver?.disconnect();
+                mutationObserver?.disconnect();
+            };
+        }, []);    
+
     return (
-        <div className="fixed top-24 z-50 right-0 bg-accent rounded-bl-xl rounded-tl-xl flex flex-col items-center py-2 px-2 gap-2">
+        <div
+            className={`fixed top-24 z-49 right-0 bg-accent rounded-bl-xl rounded-tl-xl flex flex-col items-center py-2 px-2 gap-2 transition-all duration-200 ${
+                isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 pointer-events-none'
+            }`}
+        >
             {/* Youtube */}
             <a href="https://www.youtube.com/channel/UC8VgQsbpmNbZJuDEyAQpUcg?view_as=subscriber">
                 <svg
