@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useSeries from "@/hooks/useSeries"
 
 const LINE_DURATION_MS = 900;
@@ -72,8 +72,12 @@ function MilestoneItem({ date, status, title, desc, animate, circleDelay, textDe
 
 export default function MilestoneDiagram() {
     const { series = [], isLoading } = useSeries();
-    const containerRef = useRef(null);
+    const [containerElement, setContainerElement] = useState(null);
     const [isAnimated, setIsAnimated] = useState(false);
+
+    const containerRef = useCallback((node) => {
+        setContainerElement(node);
+    }, []);
 
     const today = new Date();
 
@@ -110,9 +114,7 @@ export default function MilestoneDiagram() {
         });
 
     useEffect(() => {
-        const node = containerRef.current;
-
-        if (!node) {
+        if (!containerElement) {
             return undefined;
         }
 
@@ -128,10 +130,10 @@ export default function MilestoneDiagram() {
             }
         );
 
-        observer.observe(node);
+        observer.observe(containerElement);
 
         return () => observer.disconnect();
-    }, []);
+    }, [containerElement]);
 
     if (isLoading) {
         return <p>Loading series...</p>
