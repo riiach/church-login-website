@@ -41,6 +41,8 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
+        $request->session()->regenerate();
+
         // Authenticated, user is logged in via Sanctum cookie
         $user = Auth::user();
 

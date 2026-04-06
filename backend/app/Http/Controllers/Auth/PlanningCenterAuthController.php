@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class PlanningCenterAuthController extends Controller
 {
@@ -23,7 +23,7 @@ class PlanningCenterAuthController extends Controller
         return redirect("https://api.planningcenteronline.com/oauth/authorize?{$query}");
     }
 
-    public function callback()
+    public function callback(Request $request)
     {
         $tokenResponse = Http::asForm()->post('https://api.planningcenteronline.com/oauth/token', [
             'grant_type' => 'authorization_code',
@@ -76,8 +76,9 @@ class PlanningCenterAuthController extends Controller
 
         Auth::guard('web')->login($user);
 
-        Session::save();
+        $request->session()->regenerate();
+        $request->session()->save();
 
-        return redirect('http://localhost:3000');
+        return redirect(config('app.frontend_url'));
     }
 }

@@ -15,36 +15,107 @@ export default function SectionNavigator({ sections = [] }) {
     }, []);
 
     useEffect(() => {
-        const observers = [];
-        sections.forEach((section) => {
-            const el = document.getElementById(section.id);
-            if (!el) return;
-            const observer = new IntersectionObserver(
-                ([entry]) => { if (entry.isIntersecting) setActiveId(section.id); },
-                { threshold: 0.5 }
-            );
-            observer.observe(el);
-            observers.push(observer);
-        });
-        return () => observers.forEach((obs) => obs.disconnect());
+        let observers = [];
+        let mutationObserver = null;
+
+        const connectObservers = () => {
+            const elements = sections
+                .map((section) => ({
+                    id: section.id,
+                    element: document.getElementById(section.id),
+                }))
+                .filter((section) => section.element);
+
+            if (!elements.length) {
+                return false;
+            }
+
+            observers.forEach((observer) => observer.disconnect());
+            observers = [];
+
+            elements.forEach(({ id, element }) => {
+                const observer = new IntersectionObserver(
+                    ([entry]) => {
+                        if (entry.isIntersecting) {
+                            setActiveId(id);
+                        }
+                    },
+                    { threshold: 0.5 }
+                );
+
+                observer.observe(element);
+                observers.push(observer);
+            });
+
+            return true;
+        };
+
+        if (!connectObservers()) {
+            mutationObserver = new MutationObserver(() => {
+                if (connectObservers() && mutationObserver) {
+                    mutationObserver.disconnect();
+                    mutationObserver = null;
+                }
+            });
+
+            if (document.body) {
+                mutationObserver.observe(document.body, {
+                    childList: true,
+                    subtree: true,
+                });
+            }
+        }
+
+        return () => {
+            observers.forEach((observer) => observer.disconnect());
+            mutationObserver?.disconnect();
+        };
     }, [sections]);
 
     useEffect(() => {
-        const footer = document.getElementById("footer");
+        let footerObserver = null;
+        let mutationObserver = null;
 
-        if (!footer) return;
+        const connectFooterObserver = () => {
+            const footer = document.getElementById("footer");
 
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                // Hide when footer is visible
-                setIsVisible(!entry.isIntersecting);
-            },
-            { threshold: 0.1 } // triggers when footer starts appearing
-        );
+            if (!footer) {
+                return false;
+            }
 
-        observer.observe(footer);
+            footerObserver?.disconnect();
 
-        return () => observer.disconnect();
+            footerObserver = new IntersectionObserver(
+                ([entry]) => {
+                    setIsVisible(!entry.isIntersecting);
+                },
+                { threshold: 0.1 }
+            );
+
+            footerObserver.observe(footer);
+            return true;
+        };
+
+        if (!connectFooterObserver()) {
+            mutationObserver = new MutationObserver(() => {
+                if (connectFooterObserver() && mutationObserver) {
+                    mutationObserver.disconnect();
+                    mutationObserver = null;
+                }
+            });
+
+            if (document.body) {
+                mutationObserver.observe(document.body, {
+                    childList: true,
+                    subtree: true,
+                });
+            }
+        }
+
+        return () => {
+            footerObserver?.disconnect();
+            mutationObserver?.disconnect();
+        };
     }, []);
 
     return (

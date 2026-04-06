@@ -19,7 +19,9 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:3000', 'https://next-aim-website.onrender.com'],
+    'allowed_origins' => array_filter([
+        rtrim((string) env('FRONTEND_URL', env('APP_FRONTEND_URL', 'http://localhost:3000')), '/'),
+    ]),
 
     'allowed_origins_patterns' => [],
 

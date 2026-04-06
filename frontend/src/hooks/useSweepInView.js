@@ -1,29 +1,37 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const useSweepInView = () => {
-    const sectionRef = useRef(null);
-    const textRef = useRef(null);
+    const [sectionElement, setSectionElement] = useState(null);
+    const [textElement, setTextElement] = useState(null);
+
+    const sectionRef = useCallback((node) => {
+        setSectionElement(node);
+    }, []);
+
+    const textRef = useCallback((node) => {
+        setTextElement(node);
+    }, []);
 
     useEffect(() => {
-        if (!sectionRef.current || !textRef.current) return;
+        if (!sectionElement || !textElement) return;
 
         const ctx = gsap.context(() => {
             ScrollTrigger.create({
-                trigger: sectionRef.current,
+                trigger: sectionElement,
                 start: "top 30%",
                 once: true,
                 markers: false,
                 onEnter: () => {
-                    textRef.current?.classList.add("active");
+                    textElement.classList.add("active");
                 },
             });
-        }, sectionRef);
+        }, sectionElement);
 
         const timeout = setTimeout(() => {
             ScrollTrigger.refresh();
@@ -33,7 +41,7 @@ export const useSweepInView = () => {
             clearTimeout(timeout);
             ctx.revert();
         };
-    }, []);
+    }, [sectionElement, textElement]);
 
     return { sectionRef, textRef };
 };
