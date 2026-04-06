@@ -129,7 +129,7 @@ return [
 
     'cookie' => env(
         'SESSION_COOKIE',
-        'laravel_session'
+        'aim_backend_session'
     ),
 
     /*

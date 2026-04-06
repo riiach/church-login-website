@@ -27,7 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Keep admin and frontend auth flows separated.
         $middleware->redirectGuestsTo(function (Request $request) {
             if ($request->is('admin') || $request->is('admin/*')) {
-                return route('admin.login', [], false);
+                return '/admin/login';
             }
 
             return url('/auth/planning-center/redirect');
