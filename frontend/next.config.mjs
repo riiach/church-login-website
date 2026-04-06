@@ -2,6 +2,14 @@
 const nextConfig = {
   /* config options here */
   reactCompiler: true,
+    async rewrites() {
+        return [
+            {
+                source: '/backend/:path*',
+                destination: 'https://salmon-kingfisher-952621.hostingersite.com/:path*',
+            },
+        ];
+    },
     images: {
         remotePatterns: [
             {

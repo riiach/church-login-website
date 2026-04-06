@@ -40,7 +40,7 @@ const Alert = ({ message, type = "info" }) => {
                 />
             </svg>
 
-            <p className="text-sm">{message}</p>
+            <p className="text-sm text-black">{message}</p>
 
             {/* Close button */}
             <button

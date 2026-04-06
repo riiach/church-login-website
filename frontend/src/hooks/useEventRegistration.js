@@ -63,8 +63,8 @@ export default function useEventRegistration(eventId) {
             mutateRemaining(); // refetch remaining slots
             mutateRegistration(true); // mark user as registered locally
         } catch (error) {
-            console.error("Error registering event:", error);
-            setMessage(error.response?.data?.message || "Failed to register. Please try again.");
+            console.error("Error registering event:", error.response?.data || error);
+            setMessage("Failed to register. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -85,8 +85,8 @@ export default function useEventRegistration(eventId) {
             mutateRemaining(); // refetch remaining slots
             mutateRegistration(null); // mark user as unregistered locally
         } catch (error) {
-            console.error("Error unregistering event:", error);
-            setMessage(error.response?.data?.message || "Failed to unregister. Please try again.");
+            console.error("Error unregistering event:", error.response?.data || error);
+            setMessage("Failed to unregister. Please try again.");
         } finally {
             setLoading(false);
         }
