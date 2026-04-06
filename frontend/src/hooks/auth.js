@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import axios from "../lib/axios";
 
 export const useAuth = ({ middleware } = {}) => {
     const router = useRouter();
-    const [isLoading, setLoading] = useState(true);
 
     const fetcher = async () => {
         try {
@@ -66,8 +65,6 @@ export const useAuth = ({ middleware } = {}) => {
     useEffect(() => {
         if (user === undefined) return;
 
-        setLoading(false);
-
         if (middleware === "guest" && user) {
             router.push("/");
         }
@@ -81,7 +78,7 @@ export const useAuth = ({ middleware } = {}) => {
     return {
         user,
         csrf,
-        isLoading,
+        isLoading: user === undefined,
         login,
         logout,
     };

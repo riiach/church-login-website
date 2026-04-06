@@ -1,7 +1,9 @@
 import Axios from  "axios";
 
+import { getBackendBaseUrl } from "./backend-url";
+
 const axios = Axios.create({
-    baseURL: "/backend",
+    baseURL: getBackendBaseUrl(),
     withCredentials: true,
     withXSRFToken: true,
     headers: {

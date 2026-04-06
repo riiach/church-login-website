@@ -2,10 +2,12 @@
 
 import Image from "next/image"
 
+import { getPlanningCenterRedirectUrl } from "@/lib/backend-url"
+
 export default function LoginForm() {
 
     const handlePlanningCenterLogin = () => {
-        window.location.href = "/backend/auth/planning-center/redirect"
+        window.location.href = getPlanningCenterRedirectUrl()
     }
 
     return (
