@@ -2,11 +2,10 @@
 
 import React from "react";
 import Image from "next/image";
-import { usePCUser } from "@/context/profile";
 import useEventRegistration from "@/hooks/useEventRegistration";
 import Alert from "@/components/Alert";
 
-const CardItem = ({ item, signedIn }) => {
+const CardItem = ({ item }) => {
     const {
         registerUser,
         unregisterUser,
@@ -102,9 +101,6 @@ const CardItem = ({ item, signedIn }) => {
 };
 
 const Card = ({ data }) => {
-    const { user } = usePCUser();
-    const signedIn = !!user;
-
     return (
         <div
             className="w-full h-auto grid grid-cols-1
@@ -114,7 +110,6 @@ const Card = ({ data }) => {
                 <CardItem
                     key={item.id}
                     item={item}
-                    signedIn={signedIn}
                 />
             ))}
         </div>

@@ -3,12 +3,12 @@
 import useSWR from "swr";
 import axios from "@/lib/axios";
 import { useState } from "react";
-import { usePCUser } from "@/context/profile";
+import { useAuth } from "@/hooks/auth";
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 export default function useEventRegistration(eventId) {
-    const { user } = usePCUser();
+    const { user } = useAuth();
     const [isLoading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
 
