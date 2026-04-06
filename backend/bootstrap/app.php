@@ -33,11 +33,6 @@ return Application::configure(basePath: dirname(__DIR__))
             return url('/auth/planning-center/redirect');
         });
 
-        // CORS
-        $middleware->use([
-            \Illuminate\Http\Middleware\HandleCors::class,
-        ]);
-
         // Sanctum SPA authentication
         $middleware->api(prepend: [
             EnsureFrontendRequestsAreStateful::class,
