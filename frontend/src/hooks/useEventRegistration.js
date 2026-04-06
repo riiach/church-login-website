@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/auth";
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 export default function useEventRegistration(eventId) {
-    const { user } = useAuth();
+    const { user, csrf } = useAuth();
     const [isLoading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
 
@@ -50,6 +50,8 @@ export default function useEventRegistration(eventId) {
         if (registeredState) return; // already registered
         setLoading(true);
         try {
+            await csrf();
+
             await axios.post(`/api/events/${eventId}/register`, {
                 user_id: user.id,
                 name: user.name,
@@ -62,7 +64,7 @@ export default function useEventRegistration(eventId) {
             mutateRegistration(true); // mark user as registered locally
         } catch (error) {
             console.error("Error registering event:", error);
-            setMessage("Failed to register. Please try again.");
+            setMessage(error.response?.data?.message || "Failed to register. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -74,6 +76,8 @@ export default function useEventRegistration(eventId) {
         if (!registeredState) return; // not registered
         setLoading(true);
         try {
+            await csrf();
+
             await axios.post(`/api/events/${eventId}/unregister`, {
                 user_id: user.id,
             });
@@ -82,7 +86,7 @@ export default function useEventRegistration(eventId) {
             mutateRegistration(null); // mark user as unregistered locally
         } catch (error) {
             console.error("Error unregistering event:", error);
-            setMessage("Failed to unregister. Please try again.");
+            setMessage(error.response?.data?.message || "Failed to unregister. Please try again.");
         } finally {
             setLoading(false);
         }
