@@ -4,9 +4,9 @@ import React, { useState, useEffect } from 'react'
 import Image from "next/image";
 
 const images = [
-    "https://images.pexels.com/photos/16718734/pexels-photo-16718734.jpeg",
-    "https://images.pexels.com/photos/9577530/pexels-photo-9577530.jpeg",
-    "https://images.pexels.com/photos/10727327/pexels-photo-10727327.jpeg",
+    "https://images.pexels.com/photos/16718734/pexels-photo-16718734.jpeg?auto=compress&cs=tinysrgb&w=1600&q=75",
+    "https://images.pexels.com/photos/9577530/pexels-photo-9577530.jpeg?auto=compress&cs=tinysrgb&w=1600&q=75",
+    "https://images.pexels.com/photos/10727327/pexels-photo-10727327.jpeg?auto=compress&cs=tinysrgb&w=1600&q=75",
 ];
 
 const Carousel = () => {
@@ -27,7 +27,14 @@ const Carousel = () => {
         <div className="relative w-full h-96 rounded-2xl overflow-hidden">
             {images.map((src, i) => (
                 <div key={i} className={`absolute inset-0 transition-opacity duration-700 ${i === current ? 'opacity-100' : 'opacity-0'}`}>
-                    <Image src={src} alt={`Slide ${i + 1}`} fill className="object-cover object-center" />
+                    <Image
+                        src={src}
+                        alt={`Slide ${i + 1}`}
+                        fill
+                        sizes="(max-width: 1280px) 100vw, 50vw"
+                        priority={i === 0}
+                        className="object-cover object-center"
+                    />
                 </div>
             ))}
 

@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function LoginPage() {
     return (
-        <div className="min-h-screen w-full bg-background px-8 xl:px-16 2xl:px-28">
+        <div className="min-h-[calc(100vh-4rem)] w-full bg-background px-8 xl:px-16 2xl:px-28 flex items-center justify-center">
             <LoginForm />
         </div>
     );

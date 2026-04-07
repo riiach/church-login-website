@@ -75,14 +75,14 @@ const MobileNav = ({ open, setOpen, user, pathname, logout }) => (
                 )}
             </div>
 
-            <div className="flex-1 overflow-y-auto py-8">
-                <ul className="flex flex-col gap-2">
+            <div className="flex-1 overflow-y-auto sm:py-8 flex items-center sm:items-start">
+                <ul className="flex flex-col sm:gap-4">
                     {navItems.map((item, index) => (
                         <li key={`${item.label}-${index}`}>
                             <Link
                                 href={item.href}
                                 onClick={() => setOpen(false)}
-                                className={`block rounded-2xl px-4 py-3 font-inter text-lg transition-all duration-300 ${
+                                className={`block rounded-2xl px-4 py-2 font-inter text-sm transition-all duration-300 ${
                                     pathname === item.href
                                         ? 'bg-background text-accent-text'
                                         : 'text-foreground hover:bg-accent/10 hover:text-accent-text'
@@ -101,7 +101,7 @@ const MobileNav = ({ open, setOpen, user, pathname, logout }) => (
                         <Link
                             href="/user/dashboard"
                             onClick={() => setOpen(false)}
-                            className="button-primary hover:bg-foreground hover:text-accent-text !text-base !border !rounded-2xl border-gray-300 !py-4 w-full text-center transition-all duration-300"
+                            className="button-primary hover:bg-foreground hover:text-accent-text !text-base !border !rounded-2xl border-gray-300 !py-2 w-full text-center transition-all duration-300"
                         >
                             My Dashboard
                         </Link>
@@ -110,7 +110,7 @@ const MobileNav = ({ open, setOpen, user, pathname, logout }) => (
                                 setOpen(false);
                                 await logout();
                             }}
-                            className="button-secondary dark:!text-background !text-base !border !rounded-2xl border-gray-300 !py-4 w-full text-center transition-all duration-300"
+                            className="button-secondary dark:!text-background !text-base !rounded-2xl !py-2 w-full text-center transition-all duration-300"
                         >
                             Log Out
                         </button>
@@ -120,14 +120,14 @@ const MobileNav = ({ open, setOpen, user, pathname, logout }) => (
                         <Link
                             href="/login"
                             onClick={() => setOpen(false)}
-                            className="button-primary hover:bg-foreground hover:text-accent-text !text-base !border !rounded-2xl border-gray-300 !py-4 w-full text-center transition-all duration-300"
+                            className="button-primary hover:bg-foreground hover:text-accent-text !text-base !border !rounded-2xl border-gray-300 !py-2 w-full text-center transition-all duration-300"
                         >
                             Log In
                         </Link>
                         <Link
                             href="/login"
                             onClick={() => setOpen(false)}
-                            className="button-secondary dark:!text-background !text-base !border !rounded-2xl border-gray-300 !py-4 w-full text-center transition-all duration-300"
+                            className="button-secondary dark:!text-background !text-base !rounded-2xl !py-2 w-full text-center transition-all duration-300"
                         >
                             Register
                         </Link>

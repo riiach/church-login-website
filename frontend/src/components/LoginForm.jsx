@@ -11,15 +11,16 @@ export default function LoginForm() {
     }
 
     return (
-        <div className="min-h-screen -mt-16 xl:-mt-0 flex items-center justify-center bg-background px-4 reveal-down">
-            <div className="flex flex-col xl:flex-row w-full xl:w-1/2 max-w-4xl bg-white dark:bg-black/80 rounded-lg shadow-lg overflow-hidden">
+        <div className="max-h-screen w-full -mt-16 xl:mt-16 flex items-center justify-center bg-background xl:px-4 reveal-down">
+            <div className="flex flex-col xl:flex-row w-full xl:w-1/2 bg-white dark:bg-black/80 rounded-lg shadow-lg overflow-hidden">
 
                 {/* Image Section */}
-                <div className="relative w-full xl:block xl:w-1/2 min-h-[500px]">
+                <div className="relative w-full xl:block xl:w-1/2 min-h-[240px] sm:min-h-[300px] xl:min-h-[500px]">
                     <Image
-                        src="https://images.pexels.com/photos/34442266/pexels-photo-34442266.jpeg"
+                        src="https://images.pexels.com/photos/34442266/pexels-photo-34442266.jpeg?auto=compress&cs=tinysrgb&w=1200&q=75"
                         alt="Banner"
                         fill
+                        sizes="(max-width: 1280px) 100vw, 50vw"
                         className="object-cover"
                         priority
                     />
@@ -39,14 +40,14 @@ export default function LoginForm() {
                     <div className="flex flex-col gap-2">
                         <button
                             onClick={handlePlanningCenterLogin}
-                            className="flex items-center justify-center w-full mt-8 border border-gray-300 rounded-lg py-3 hover:bg-foreground hover:text-accent-text transition duration-300"
+                            className="flex text-xs sm:text-base items-center justify-center w-full mt-8 border border-gray-300 rounded-lg py-3 hover:bg-foreground hover:text-accent-text transition duration-300"
                         >
                             Sign in with Planning Center
                         </button>
 
                         <button
                             onClick={handlePlanningCenterLogin}
-                            className="flex items-center justify-center bg-accent w-full mt-2 border border-gray-300 rounded-lg py-3 hover:bg-accent/80 transition duration-300"
+                            className="flex text-xs sm:text-base items-center justify-center bg-accent w-full mt-2 border border-gray-300 rounded-lg py-3 hover:bg-accent/80 transition duration-300"
                         >
                             Register with Planning Center
                         </button>

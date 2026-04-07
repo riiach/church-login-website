@@ -26,14 +26,16 @@ const ListCard = ( {data} ) => {
 
                     <div className="w-auto shrink-0 flex justify-start items-start ml-4 overflow-hidden">
                         <div className="w-12 h-12 rounded-full bg-foreground/10 flex justify-center items-center overflow-hidden">
-                            <Image
-                                src={item.image}
-                                alt={item.title}
-                                width={48}
-                                height={48}
-                                unoptimized
-                                className="w-full h-full object-cover"
-                            />
+                            {item.image ? (
+                                <Image
+                                    src={item.image}
+                                    alt={item.title}
+                                    width={48}
+                                    height={48}
+                                    unoptimized
+                                    className="w-full h-full object-cover"
+                                />
+                            ) : null}
                         </div>
                     </div>
                 </div>

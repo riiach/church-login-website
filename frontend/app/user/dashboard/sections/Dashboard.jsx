@@ -40,8 +40,9 @@ const Dashboard = () => {
                                     src={weeklyScriptureBanner.image_url}
                                     alt={weeklyScriptureBanner.category ?? "Weekly Scripture Banner"}
                                     fill
+                                    sizes="(max-width: 1280px) 100vw, 50vw"
                                     className="object-cover rounded-2xl"
-                                    unoptimized
+                                    priority
                                 />
                             )}
 

@@ -2,6 +2,25 @@
 
 use Illuminate\Support\Str;
 
+$appUrl = (string) env('APP_URL', 'http://localhost');
+$frontendUrl = (string) env('FRONTEND_URL', env('APP_FRONTEND_URL', $appUrl));
+
+$appScheme = parse_url($appUrl, PHP_URL_SCHEME);
+$frontendScheme = parse_url($frontendUrl, PHP_URL_SCHEME);
+$appHost = parse_url($appUrl, PHP_URL_HOST);
+$frontendHost = parse_url($frontendUrl, PHP_URL_HOST);
+$appPort = parse_url($appUrl, PHP_URL_PORT);
+$frontendPort = parse_url($frontendUrl, PHP_URL_PORT);
+
+$isCrossOriginFrontend = $appHost
+    && $frontendHost
+    && ($appHost !== $frontendHost || $appPort !== $frontendPort);
+
+$isFullyHttps = $appScheme === 'https' && $frontendScheme === 'https';
+
+$defaultSessionSecureCookie = $isFullyHttps;
+$defaultSessionSameSite = $isCrossOriginFrontend && $isFullyHttps ? 'none' : 'lax';
+
 return [
 
     /*
@@ -169,7 +188,7 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE'),
+    'secure' => env('SESSION_SECURE_COOKIE', $defaultSessionSecureCookie),
 
     /*
     |--------------------------------------------------------------------------
@@ -199,7 +218,7 @@ return [
     |
     */
 
-    'same_site' => env('SESSION_SAME_SITE', 'lax'),
+    'same_site' => env('SESSION_SAME_SITE', $defaultSessionSameSite),
 
     /*
     |--------------------------------------------------------------------------

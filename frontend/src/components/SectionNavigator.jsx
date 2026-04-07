@@ -15,37 +15,62 @@ export default function SectionNavigator({ sections = [] }) {
     }, []);
 
     useEffect(() => {
-        let observers = [];
         let mutationObserver = null;
+        let trackedSections = [];
+        let animationFrameId = null;
+
+        const updateActiveSection = () => {
+            if (!trackedSections.length) {
+                return;
+            }
+
+            const viewportAnchor = window.innerHeight * (window.innerWidth < 768 ? 0.35 : 0.45);
+            let nextActiveId = trackedSections[0].id;
+            let smallestDistance = Number.POSITIVE_INFINITY;
+
+            trackedSections.forEach(({ id, element }) => {
+                const rect = element.getBoundingClientRect();
+                const containsAnchor = rect.top <= viewportAnchor && rect.bottom >= viewportAnchor;
+                const distanceToSection = containsAnchor
+                    ? 0
+                    : Math.min(
+                        Math.abs(rect.top - viewportAnchor),
+                        Math.abs(rect.bottom - viewportAnchor)
+                    );
+
+                if (distanceToSection < smallestDistance) {
+                    smallestDistance = distanceToSection;
+                    nextActiveId = id;
+                }
+            });
+
+            setActiveId((currentActiveId) => currentActiveId === nextActiveId ? currentActiveId : nextActiveId);
+        };
+
+        const scheduleActiveSectionUpdate = () => {
+            if (animationFrameId !== null) {
+                return;
+            }
+
+            animationFrameId = window.requestAnimationFrame(() => {
+                animationFrameId = null;
+                updateActiveSection();
+            });
+        };
 
         const connectObservers = () => {
-            const elements = sections
+            trackedSections = sections
                 .map((section) => ({
                     id: section.id,
                     element: document.getElementById(section.id),
                 }))
                 .filter((section) => section.element);
 
-            if (!elements.length) {
+            if (!trackedSections.length) {
                 return false;
             }
 
-            observers.forEach((observer) => observer.disconnect());
-            observers = [];
-
-            elements.forEach(({ id, element }) => {
-                const observer = new IntersectionObserver(
-                    ([entry]) => {
-                        if (entry.isIntersecting) {
-                            setActiveId(id);
-                        }
-                    },
-                    { threshold: 0.5 }
-                );
-
-                observer.observe(element);
-                observers.push(observer);
-            });
+            scheduleActiveSectionUpdate();
 
             return true;
         };
@@ -66,8 +91,16 @@ export default function SectionNavigator({ sections = [] }) {
             }
         }
 
+        window.addEventListener("scroll", scheduleActiveSectionUpdate, { passive: true });
+        window.addEventListener("resize", scheduleActiveSectionUpdate);
+
         return () => {
-            observers.forEach((observer) => observer.disconnect());
+            if (animationFrameId !== null) {
+                window.cancelAnimationFrame(animationFrameId);
+            }
+
+            window.removeEventListener("scroll", scheduleActiveSectionUpdate);
+            window.removeEventListener("resize", scheduleActiveSectionUpdate);
             mutationObserver?.disconnect();
         };
     }, [sections]);

@@ -76,7 +76,13 @@ const ListItem = ({ item }) => {
                 </div>
                 <div className={`relative h-auto aspect-square w-1/2 lg:max-w-1/3 xl:max-w-1/4 rounded-2xl ${item.image === null ? 'hidden' : 'block'}`}>
                     {item.image && (
-                        <Image src={item.image} alt={item.title} fill className="object-cover" />
+                        <Image
+                            src={item.image}
+                            alt={item.title}
+                            fill
+                            sizes="(max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                            className="object-cover"
+                        />
                     )}
                 </div>
             </div>
