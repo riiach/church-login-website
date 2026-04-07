@@ -14,5 +14,12 @@ export const getBackendBaseUrl = () => {
 
 export const getBackendApiBaseUrl = () => `${getBackendBaseUrl()}/api`;
 
-export const getPlanningCenterRedirectUrl = () =>
-    `${getBackendBaseUrl()}/auth/planning-center/redirect`;
+export const getPlanningCenterRedirectUrl = redirectTo => {
+    const redirectUrl = `${getBackendBaseUrl()}/auth/planning-center/redirect`;
+
+    if (typeof redirectTo !== "string" || redirectTo.trim() === "") {
+        return redirectUrl;
+    }
+
+    return `${redirectUrl}?redirect_to=${encodeURIComponent(redirectTo)}`;
+};

@@ -7,7 +7,7 @@ import { getPlanningCenterRedirectUrl } from "@/lib/backend-url"
 export default function LoginForm() {
 
     const handlePlanningCenterLogin = () => {
-        window.location.href = getPlanningCenterRedirectUrl()
+        window.location.href = getPlanningCenterRedirectUrl(window.location.href)
     }
 
     return (
