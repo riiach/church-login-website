@@ -41,8 +41,8 @@ const NavbarDesktop = () => {
                     <Link href="/">Visit Us</Link>
                 </li>
 
-                <li className={`transition-all duration-300 ${pathname === "/sermons" ? "text-accent-text" : "hover:text-accent-text"}`}>
-                    <Link href="/">Sermons</Link>
+                <li className={`transition-all duration-300 ${pathname === "/sermon" ? "text-accent-text" : "hover:text-accent-text"}`}>
+                    <Link href="/sermon">Sermons</Link>
                 </li>
 
                 <li className={`transition-all duration-300 ${pathname === "/join" ? "text-accent-text" : "hover:text-accent-text"}`}>

@@ -15,9 +15,9 @@ const SectionTemplate = ({ sectionTitle, title, description, content } ) => {
                 <p className="text-section-title ml-2">{sectionTitle}</p>
             </div>
 
-            <div className="flex flex-col xl:flex-row items-center justify-start">
+            <div className="flex flex-col xl:flex-row items-start xl:items-center justify-start">
                 {/* Title */}
-                <div className="flex-1 self-end flex flex-col items-start">
+                <div className="flex-1 self-start xl:self-end flex flex-col items-start">
                     {title}
                 </div>
 

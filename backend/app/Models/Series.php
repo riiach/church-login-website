@@ -9,6 +9,7 @@ class Series extends Model
     protected $fillable = [
         'order',
         'title',
+        'chapter',
         'description',
         'start_date',
         'end_date',

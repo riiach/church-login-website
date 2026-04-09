@@ -1,6 +1,7 @@
 "use client";
 
 import useSWR from "swr";
+import { useSWRConfig } from "swr";
 import axios from "@/lib/axios";
 import { useState } from "react";
 import { useAuth } from "@/hooks/auth";
@@ -9,6 +10,7 @@ const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 export default function useEventRegistration(eventId) {
     const { user, csrf } = useAuth();
+    const { mutate } = useSWRConfig();
     const [isLoading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
 
@@ -62,6 +64,9 @@ export default function useEventRegistration(eventId) {
             setMessage("You have been registered!");
             mutateRemaining(); // refetch remaining slots
             mutateRegistration(true); // mark user as registered locally
+            if (user?.id) {
+                mutate(`/api/users/${user.id}/registered-events`);
+            }
         } catch (error) {
             console.error("Error registering event:", error.response?.data || error);
             setMessage("Failed to register. Please try again.");
@@ -84,6 +89,9 @@ export default function useEventRegistration(eventId) {
             setMessage("You have been unregistered.");
             mutateRemaining(); // refetch remaining slots
             mutateRegistration(null); // mark user as unregistered locally
+            if (user?.id) {
+                mutate(`/api/users/${user.id}/registered-events`);
+            }
         } catch (error) {
             console.error("Error unregistering event:", error.response?.data || error);
             setMessage("Failed to unregister. Please try again.");

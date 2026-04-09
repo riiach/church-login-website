@@ -22,6 +22,9 @@
                                 Title
                             </th>
                             <th scope="col" class="px-6 py-3 font-medium">
+                                Chapter
+                            </th>
+                            <th scope="col" class="px-6 py-3 font-medium">
                                 Start Date
                             </th>
                             <th scope="col" class="px-6 py-3 font-medium">
@@ -46,6 +49,10 @@
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                     {{ $seriesItem->title }}
                                 </th>
+                                <!-- Chapter -->
+                                <td class="px-6 py-4">
+                                    {{ $seriesItem->chapter }}
+                                </td>
                                 <!-- Start Date -->
                                 <td class="px-6 py-4">
                                     {{ $seriesItem->start_date }}

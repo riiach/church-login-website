@@ -11,8 +11,9 @@ export default function useRegisteredEvents(userId) {
         () => axios.get(endpoint).then((res) => res.data.data),
         {
             revalidateOnFocus: false,
-            revalidateIfStale: false,
+            revalidateIfStale: true,
             revalidateOnReconnect: false,
+            revalidateOnMount: true,
         }
     );
 

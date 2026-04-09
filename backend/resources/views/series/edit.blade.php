@@ -22,6 +22,13 @@
                     <x-input-error :messages="$errors->get('title')" class="mt-2" />
                 </div>
 
+                <!-- Chapter -->
+                <div class="mt-4">
+                    <x-input-label for="chapter" :value="__('Chapter')" />
+                    <x-text-input id="chapter" class="block mt-1 w-full" type="text" name="chapter" :value="old('chapter', $series->chapter)" />
+                    <x-input-error :messages="$errors->get('chapter')" class="mt-2" />
+                </div>
+
                 <!-- Order -->
                 <div class="mt-4">
                     <x-input-label for="order" :value="__('Order')" />
@@ -35,8 +42,9 @@
                     <x-text-input id="start_date" class="block mt-1 w-full"
                                     type="date"
                                     name="start_date"
-                                    :value="old('start_date', $series->start_date)"
+                                    :value="old('start_date', optional($series->start_date)->format('Y-m-d'))"
                     />
+                    <x-input-error :messages="$errors->get('start_date')" class="mt-2" />
                 </div>
 
                 <x-input-label for="end_date" :value="__('End Date')" class="mt-2" />
@@ -46,8 +54,9 @@
                     class="block mt-1 w-full"
                     type="date"
                     name="end_date"
-                    :value="old('end_date', $series->end_date)"
+                    :value="old('end_date', optional($series->end_date)->format('Y-m-d'))"
                 />
+                <x-input-error :messages="$errors->get('end_date')" class="mt-2" />
 
                 <!-- Description -->
                 <div class="mt-4">

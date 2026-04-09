@@ -14,6 +14,7 @@ class SeriesController extends Controller
         $windowEnd = Carbon::today()->addMonths(6);
 
         $series = Series::query()
+            ->select(['id', 'order', 'title', 'chapter', 'description', 'start_date', 'end_date'])
             ->where(function ($query) use ($windowStart, $windowEnd) {
                 $query->where(function ($subQuery) use ($windowStart, $windowEnd) {
                     $subQuery->whereNotNull('start_date')

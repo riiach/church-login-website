@@ -1,7 +1,6 @@
 import React from 'react'
-import Image from "next/image";
 
-const ListCard = ( {data} ) => {
+const ListCard = ({ data, eagerImageCount = 0 }) => {
     return (
         <div className="flex flex-col gap-4 xl:px-2 xl:py-2">
             {data.map((item, index) => (
@@ -27,12 +26,14 @@ const ListCard = ( {data} ) => {
                     <div className="w-auto shrink-0 flex justify-start items-start ml-4 overflow-hidden">
                         <div className="w-12 h-12 rounded-full bg-foreground/10 flex justify-center items-center overflow-hidden">
                             {item.image ? (
-                                <Image
+                                <img
                                     src={item.image}
                                     alt={item.title}
                                     width={48}
                                     height={48}
-                                    unoptimized
+                                    loading={index < eagerImageCount ? "eager" : "lazy"}
+                                    fetchPriority={index < eagerImageCount ? "high" : "auto"}
+                                    decoding="async"
                                     className="w-full h-full object-cover"
                                 />
                             ) : null}

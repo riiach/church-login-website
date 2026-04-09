@@ -27,6 +27,7 @@ class SeriesController extends Controller
         $data = $request->validated();
 
         $data['order'] = $data['order'] ?? 0;
+        $data['chapter'] = $data['chapter'] ?: null;
         $data['start_date'] = $data['start_date'] ?: null;
         $data['end_date'] = $data['end_date'] ?: null;
 
@@ -45,6 +46,7 @@ class SeriesController extends Controller
         $data = $request->validated();
 
         $data['order'] = $data['order'] ?? $series->order ?? 0;
+        $data['chapter'] = $data['chapter'] ?: null;
         $data['start_date'] = $data['start_date'] ?: null;
         $data['end_date'] = $data['end_date'] ?: null;
 

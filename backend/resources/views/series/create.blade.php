@@ -21,6 +21,13 @@
                     <x-input-error :messages="$errors->get('title')" class="mt-2" />
                 </div>
 
+                <!-- Chapter -->
+                <div class="mt-4">
+                    <x-input-label for="chapter" :value="__('Chapter')" />
+                    <x-text-input id="chapter" class="block mt-1 w-full" type="text" name="chapter" :value="old('chapter')" />
+                    <x-input-error :messages="$errors->get('chapter')" class="mt-2" />
+                </div>
+
                 <!-- Order -->
                 <div class="mt-4">
                     <x-input-label for="order" :value="__('Order')" />

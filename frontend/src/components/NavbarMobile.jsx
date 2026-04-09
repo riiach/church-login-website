@@ -7,7 +7,7 @@ import { useAuth } from '@/hooks/auth';
 const navItems = [
     { href: '/', label: 'Our Mission' },
     { href: '/', label: 'Visit Us' },
-    { href: '/', label: 'Sermons' },
+    { href: '/sermon', label: 'Sermons' },
     { href: '/', label: 'Join Us' },
     { href: '/announcement', label: 'Announcement' },
     { href: '/', label: 'Offering' },

@@ -7,7 +7,7 @@
 
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="/admin/dashboard">
+                    <a href="{{ route('admin.dashboard') }}">
                         <img src="{{ asset('storage/images/aimLogo.png') }}" alt="logo" class="block w-10"/>
                     </a>
                 </div>
@@ -15,7 +15,7 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
 
-                    <x-nav-link href="/admin/dashboard" :active="request()->routeIs('admin.dashboard')">
+                    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                         Dashboard
                     </x-nav-link>
 
@@ -65,10 +65,10 @@
                             Profile
                         </x-dropdown-link>
 
-                        <form method="POST" action="/admin/logout">
+                        <form method="POST" action="{{ route('admin.logout') }}">
                             @csrf
 
-                            <x-dropdown-link href="/admin/logout"
+                            <x-dropdown-link :href="route('admin.logout')"
                                 onclick="event.preventDefault();
                                 this.closest('form').submit();">
                                 Log Out
@@ -116,7 +116,7 @@
 
         <div class="pt-2 pb-3 space-y-1">
 
-            <x-responsive-nav-link href="/admin/dashboard" :active="request()->routeIs('admin.dashboard')">
+            <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                 Dashboard
             </x-responsive-nav-link>
 
@@ -139,10 +139,10 @@
                     Profile
                 </x-responsive-nav-link>
 
-                <form method="POST" action="/admin/logout">
+                <form method="POST" action="{{ route('admin.logout') }}">
                     @csrf
 
-                    <x-responsive-nav-link href="/admin/logout"
+                    <x-responsive-nav-link :href="route('admin.logout')"
                         onclick="event.preventDefault();
                         this.closest('form').submit();">
 

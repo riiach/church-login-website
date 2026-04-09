@@ -9,51 +9,88 @@ const CIRCLE_STAGGER_MS = 140;
 const TEXT_START_DELAY_MS = 180;
 const TEXT_STAGGER_MS = 110;
 
+const parseDateOnly = value => {
+    if (typeof value !== "string" || value.trim() === "") {
+        return null;
+    }
+
+    const [year, month, day] = value.split("-").map(Number);
+
+    if (!year || !month || !day) {
+        return null;
+    }
+
+    return new Date(year, month - 1, day);
+};
+
+const getToday = () => {
+    const now = new Date();
+
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+};
+
 const statusConfig = {
     done: {
         label: "Done",
-        outerRing: { border: "2.5px solid #b4b2a9", background: "transparent" },
-        innerDot: { background: "#b4b2a9" },
+        marker: {
+            background: "rgba(180, 178, 169, 0.75)",
+            boxShadow: "0 0 0 5px rgba(180, 178, 169, 0.14), 0 0 14px rgba(180, 178, 169, 0.28)",
+        },
     },
     active: {
         label: "In progress",
-        outerRing: {
-            border: "2.5px solid #a2e861",
-            background: "transparent",
+        marker: {
+            background: "#a2e861",
+            boxShadow: "0 0 0 6px rgba(162, 232, 97, 0.18), 0 0 18px rgba(162, 232, 97, 0.42)",
         },
-        innerDot: { background: "#a2e861" },
     },
     upcoming: {
         label: "Upcoming",
-        outerRing: { border: "2.5px solid #b4b2a9", background: "transparent" },
-        innerDot: { background: "#b4b2a9" },
+        marker: {
+            background: "rgba(180, 178, 169, 0.75)",
+            boxShadow: "0 0 0 5px rgba(180, 178, 169, 0.12), 0 0 12px rgba(180, 178, 169, 0.24)",
+        },
     },
 };
 
-function MilestoneItem({ date, status, title, desc, animate, circleDelay, textDelay }) {
-    const config = statusConfig[status];
+const lightStatusConfig = {
+    done: {
+        label: "Done",
+        marker: {
+            background: "rgba(255, 255, 255, 0.82)",
+            boxShadow: "0 0 0 5px rgba(255, 255, 255, 0.12), 0 0 14px rgba(255, 255, 255, 0.26)",
+        },
+    },
+    active: {
+        label: "In progress",
+        marker: {
+            background: "#ffffff",
+            boxShadow: "0 0 0 6px rgba(255, 255, 255, 0.16), 0 0 18px rgba(255, 255, 255, 0.34)",
+        },
+    },
+    upcoming: {
+        label: "Upcoming",
+        marker: {
+            background: "rgba(255, 255, 255, 0.82)",
+            boxShadow: "0 0 0 5px rgba(255, 255, 255, 0.12), 0 0 14px rgba(255, 255, 255, 0.24)",
+        },
+    },
+};
+
+function MilestoneItem({ date, status, title, chapter, animate, circleDelay, textDelay, configMap, textClassName }) {
+    const config = configMap[status];
+    const chapterText = typeof chapter === "string" ? chapter.trim() : "";
 
     return (
         <div style={styles.item}>
-            {/* ::before equivalent — outer ring */}
             <div
                 style={{
-                    ...styles.outerRing,
-                    ...config.outerRing,
-                    ...(animate ? styles.outerRingVisible : styles.outerRingHidden),
+                    ...styles.marker,
+                    ...config.marker,
+                    ...(animate ? styles.markerVisible : styles.markerHidden),
                     transitionDelay: `${circleDelay}ms`,
                 }}
-            >
-                {/* ::after equivalent — inner dot */}
-                <div
-                    style={{
-                        ...styles.innerDot,
-                        ...config.innerDot,
-                        ...(animate ? styles.innerDotVisible : styles.innerDotHidden),
-                        transitionDelay: `${circleDelay + 90}ms`,
-                    }}
-                />
-            </div>
+            />
 
             <div
                 style={{
@@ -62,30 +99,46 @@ function MilestoneItem({ date, status, title, desc, animate, circleDelay, textDe
                     transitionDelay: `${textDelay}ms`,
                 }}
             >
-                <p style={styles.date} className="text-foreground/70">{date}</p>
-                <p style={styles.title} className="text-foreground">{title}</p>
-                <p style={styles.desc} className="text-foreground">{desc}</p>
+                <p style={styles.date} className={textClassName.date}>{date}</p>
+                <p style={styles.title} className={textClassName.title}>{title}</p>
+                {chapterText !== "" && (
+                    <p style={styles.desc} className={textClassName.desc}>{chapterText}</p>
+                )}
             </div>
         </div>
     );
 }
 
-export default function MilestoneDiagram() {
+export default function MilestoneDiagram({ colorScheme = "default", align = "center" }) {
     const { series = [], isLoading } = useSeries();
     const [containerElement, setContainerElement] = useState(null);
     const [isAnimated, setIsAnimated] = useState(false);
+    const isLight = colorScheme === "light";
+    const isStartAligned = align === "start";
+    const configMap = isLight ? lightStatusConfig : statusConfig;
+    const textClassName = isLight
+        ? {
+            date: "text-white/80",
+            title: "text-white",
+            desc: "text-white",
+        }
+        : {
+            date: "text-foreground/70",
+            title: "text-foreground",
+            desc: "text-foreground",
+        };
 
     const containerRef = useCallback((node) => {
         setContainerElement(node);
     }, []);
 
-    const today = new Date();
+    const today = getToday();
 
     const milestones = [...series]
         .sort((left, right) => (left.order ?? 0) - (right.order ?? 0))
         .map((item) => {
-            const startDate = item.start_date ? new Date(item.start_date) : null;
-            const endDate = item.end_date ? new Date(item.end_date) : null;
+            const startDate = parseDateOnly(item.start_date);
+            const endDate = parseDateOnly(item.end_date);
 
             let status = "upcoming";
 
@@ -109,7 +162,7 @@ export default function MilestoneDiagram() {
                 date,
                 status,
                 title: item.title,
-                desc: item.description,
+                chapter: item.chapter,
             };
         });
 
@@ -136,7 +189,7 @@ export default function MilestoneDiagram() {
     }, [containerElement]);
 
     if (isLoading) {
-        return <p>Loading series...</p>
+        return <p className={isLight ? "text-white" : "text-foreground"}>Loading series...</p>
     }
 
     const lastCircleDelay = milestones.length > 0
@@ -146,7 +199,14 @@ export default function MilestoneDiagram() {
     const textStartDelay = lastCircleDelay + TEXT_START_DELAY_MS;
 
     return (
-        <div ref={containerRef} style={styles.card} className="py-8">
+        <div
+            ref={containerRef}
+            style={{
+                ...styles.card,
+                ...(isStartAligned ? styles.cardStart : null),
+            }}
+            className="py-8"
+        >
             <div
                 style={styles.timeline}
                 className="overflow-x-auto overflow-y-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
@@ -157,6 +217,7 @@ export default function MilestoneDiagram() {
                     <div
                         style={{
                             ...styles.trackSweepLine,
+                            ...(isLight ? styles.trackSweepLineLight : null),
                             ...(isAnimated ? styles.trackSweepLineVisible : styles.trackSweepLineHidden),
                         }}
                         className="overflow-hidden"
@@ -165,6 +226,8 @@ export default function MilestoneDiagram() {
                         <MilestoneItem
                             key={i}
                             {...m}
+                            configMap={configMap}
+                            textClassName={textClassName}
                             animate={isAnimated}
                             circleDelay={LINE_DURATION_MS + CIRCLE_START_DELAY_MS + (i * CIRCLE_STAGGER_MS)}
                             textDelay={textStartDelay + (i * TEXT_STAGGER_MS)}
@@ -185,12 +248,16 @@ const styles = {
         boxSizing: "border-box",
         overflow: "hidden",
     },
+    cardStart: {
+        margin: "0",
+    },
     timeline: {
         width: "100%",
         maxWidth: "100%",
         display: "block",
         overflowX: "auto",
-        overflowY: "hidden",
+        overflowY: "visible",
+        paddingTop: "0.75rem",
         paddingBottom: "0.5rem",
         WebkitOverflowScrolling: "touch",
         touchAction: "pan-x",
@@ -202,7 +269,7 @@ const styles = {
         alignItems: "flex-start",
         width: "max-content",
         minWidth: "100%",
-        overflow: "hidden",
+        overflow: "visible",
     },
     trackBaseLine: {
         position: "absolute",
@@ -225,6 +292,9 @@ const styles = {
         willChange: "transform",
         zIndex: 0,
     },
+    trackSweepLineLight: {
+        background: "#ffffff",
+    },
     trackSweepLineHidden: {
         transform: "scaleX(0)",
     },
@@ -240,45 +310,23 @@ const styles = {
         flexDirection: "column",
         alignItems: "center",
         zIndex: 1,
-        overflow: "hidden",
+        overflow: "visible",
     },
-    // Replaces .milestone-item::before (outer dot ring)
-    outerRing: {
-        width: "16px",
-        height: "16px",
+    marker: {
+        width: "12px",
+        height: "12px",
         borderRadius: "50%",
         flexShrink: 0,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        transition: "transform 520ms cubic-bezier(0.22, 1, 0.36, 1), opacity 420ms ease, border-color 240ms ease, background 240ms ease",
+        transition: "transform 520ms cubic-bezier(0.22, 1, 0.36, 1), opacity 420ms ease, box-shadow 240ms ease, background 240ms ease",
         boxSizing: "border-box",
         willChange: "transform, opacity",
         overflow: "hidden",
     },
-    outerRingHidden: {
+    markerHidden: {
         opacity: 0,
         transform: "scale(0.35)",
     },
-    outerRingVisible: {
-        opacity: 1,
-        transform: "scale(1)",
-    },
-    // Replaces .milestone-item::after (inner filled dot)
-    innerDot: {
-        width: "8px",
-        height: "8px",
-        borderRadius: "50%",
-        transition: "transform 420ms cubic-bezier(0.22, 1, 0.36, 1), opacity 320ms ease, background 0.2s",
-        flexShrink: 0,
-        willChange: "transform, opacity",
-        overflow: "hidden",
-    },
-    innerDotHidden: {
-        opacity: 0,
-        transform: "scale(0)",
-    },
-    innerDotVisible: {
+    markerVisible: {
         opacity: 1,
         transform: "scale(1)",
     },
@@ -314,6 +362,7 @@ const styles = {
         marginBottom: "6px",
     },
     title: {
+        fontFamily: "var(--font-manrope), 'Segoe UI', sans-serif",
         fontSize: "13px",
         fontWeight: 500,
         margin: "0 0 4px",

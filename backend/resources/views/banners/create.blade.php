@@ -29,6 +29,9 @@
                         <option value="main" {{ old('category') === 'main' ? 'selected' : '' }}>
                             Main
                         </option>
+                        <option value="series" {{ old('category') === 'series' ? 'selected' : '' }}>
+                            Sermon > Series
+                        </option>
                     </select>
                     <x-input-error :messages="$errors->get('category')" class="mt-2" />
                 </div>

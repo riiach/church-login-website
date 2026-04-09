@@ -25,6 +25,7 @@ class StoreSeriesRequest extends FormRequest
         return [
             'order' => ['nullable', 'integer'],
             'title' => ['required', 'string', 'max:255'],
+            'chapter' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'start_date' => ['nullable', 'date'],
             'end_date' => ['nullable', 'date'],

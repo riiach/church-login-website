@@ -20,6 +20,8 @@ const Dashboard = () => {
     if (!user) return <p>No user data</p>;
     if (isLoading || isLoadingRegisteredEvents) return <p>Loading...</p>;
 
+    const imageSrc = weeklyScriptureBanner?.image_url;
+
     return (
         <section>
             <SectionTemplateLeftRight
@@ -37,8 +39,8 @@ const Dashboard = () => {
                         <div className="w-full h-68 rounded-2xl relative bg-gray-200 mb-4 overflow-hidden">
                             {weeklyScriptureBanner?.image_url && (
                                 <Image
-                                    src={weeklyScriptureBanner.image_url}
-                                    alt={weeklyScriptureBanner.category ?? "Weekly Scripture Banner"}
+                                    src={imageSrc}
+                                    alt="Weekly Scripture Banner"
                                     fill
                                     sizes="(max-width: 1280px) 100vw, 50vw"
                                     className="object-cover rounded-2xl"
@@ -75,7 +77,15 @@ const Dashboard = () => {
                     </a>
                 }
                 content={
-                    <ListCard data={registeredEvents} />
+                    registeredEvents.length > 0 ? (
+                        <ListCard data={registeredEvents} eagerImageCount={3} />
+                    ) : (
+                        <h1 className="py-6 xl:px-4 text-3xl md:text-4xl xl:text-7xl">
+                            No events yet. 
+                            <br />
+                            Join the community by registering for something upcoming.
+                        </h1>
+                    )
                 }
             />
         </section>

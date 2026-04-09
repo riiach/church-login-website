@@ -34,13 +34,13 @@ const CardItem = ({ item }) => {
         >
             {/* Top Section */}
             <div className="w-full h-1/3 flex flex-row justify-between">
-                <div className="relative aspect-square h-full rounded-full group-hover:scale-96 transition-all duration-300">
+                <div className="relative aspect-square h-full overflow-hidden rounded-full">
                     <Image
                         src={item.image}
                         alt={item.title}
                         fill
                         sizes="80px"
-                        className="object-cover"
+                        className="object-cover transition-transform duration-300 group-hover:scale-110"
                     />
                 </div>
 
