@@ -105,11 +105,11 @@ const Series = () => {
                         />
                     )}
                     <div className="w-full h-full absolute z-25 flex flex-col justify-end px-4 md:px-12 md:pb-8 items-start">
-                        <p className="text-7xl font-manrope text-white ml-2">
+                        <p className="text-4xl md:text-7xl font-manrope text-white ml-2">
                             {activeSeries?.title ?? "Current Series"}
                         </p>
                         {typeof activeSeries?.description === "string" && activeSeries.description.trim() !== "" && (
-                            <p className="text-white ml-4 mt-4">{activeSeries.description}</p>
+                            <p className="text-sm md:text-base text-white ml-4 mt-4">{activeSeries.description}</p>
                         )}
                         <Milestone colorScheme="light" align="start" />
                     </div>

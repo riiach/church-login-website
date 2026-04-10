@@ -19,7 +19,8 @@ const Alert = ({ message, type = "info" }) => {
         <div
             className={`
                 fixed top-20 left-1/2 -translate-x-1/2 z-50
-                px-4 py-3 rounded-full shadow-lg flex items-center gap-2
+                w-[min(calc(100vw-8rem),22rem)] sm:w-auto sm:max-w-md
+                px-4 py-3 rounded-full shadow-lg flex items-start sm:items-center gap-2
                 backdrop-blur-md border border-black/10
                 transition-all duration-300 ease-out
                 ${show ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"}
@@ -40,12 +41,12 @@ const Alert = ({ message, type = "info" }) => {
                 />
             </svg>
 
-            <p className="text-sm text-black">{message}</p>
+            <p className="flex-1 text-sm leading-5 text-black break-words">{message}</p>
 
             {/* Close button */}
             <button
                 onClick={() => setShow(false)}
-                className="ml-2 text-sm opacity-60 hover:opacity-100"
+                className="ml-1 shrink-0 pt-0.5 text-sm opacity-60 hover:opacity-100 sm:ml-2 sm:pt-0"
             >
                 ✕
             </button>

@@ -82,7 +82,7 @@ function MilestoneItem({ date, status, title, chapter, animate, circleDelay, tex
     const chapterText = typeof chapter === "string" ? chapter.trim() : "";
 
     return (
-        <div style={styles.item}>
+        <div style={styles.item} className="basis-[140px] min-w-[140px] sm:basis-[180px] sm:min-w-[180px]">
             <div
                 style={{
                     ...styles.marker,
@@ -304,8 +304,7 @@ const styles = {
     },
     item: {
         position: "relative",
-        flex: "0 0 180px",
-        minWidth: "180px",
+        flex: "0 0 auto",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
