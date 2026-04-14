@@ -1,10 +1,28 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from 'react'
+import usePageLoaded from "@/hooks/usePageLoaded";
 
 const Social = () => {
     const socialRef = useRef(null);
     const [isVisible, setIsVisible] = useState(true);
+
+    const [heroReady, setHeroReady] = useState(false)
+    const [mounted, setMounted] = useState(false)
+
+    const shouldShow = mounted && heroReady && isVisible;
+
+    useEffect(() => {
+        setMounted(true)
+
+        const handleHeroLoaded = () => {
+            setTimeout(() => setHeroReady(true), 700)
+        }
+
+        window.addEventListener("heroLoaded", handleHeroLoaded)
+
+        return () => window.removeEventListener("heroLoaded", handleHeroLoaded)
+    }, [])
 
     useEffect(() => {
             // Prevent scrollbars caused by fixed-positioned children overflowing
@@ -84,8 +102,10 @@ const Social = () => {
     return (
         <div
             ref={socialRef}
-            className={`fixed top-24 z-50 right-0 bg-accent rounded-bl-xl rounded-tl-xl flex flex-col items-center py-2 px-2 gap-2 transition-all duration-200 ${
-                isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0 pointer-events-none'
+            className={`fixed top-32 z-50 right-0 bg-accent rounded-bl-xl rounded-tl-xl flex flex-col items-center py-2 px-2 gap-2 transition-all duration-700 ease-out ${
+                shouldShow
+                    ? 'translate-x-0 opacity-100'
+                    : 'translate-x-full opacity-0 pointer-events-none'
             }`}
         >
             {/* Youtube */}

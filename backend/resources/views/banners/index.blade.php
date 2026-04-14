@@ -31,10 +31,15 @@
                     <thead class="text-sm text-gray-600 bg-gray-100 border-b border-gray-300">
                         <tr>
                             <th scope="col" class="px-6 py-3 font-medium">
+                                Order
+                            <th scope="col" class="px-6 py-3 font-medium">
                                 Image
                             </th>
                             <th scope="col" class="px-6 py-3 font-medium">
                                 Category
+                            </th>
+                            <th scope="col" class="px-6 py-3 font-medium">
+                                Link
                             </th>
                             <th scope="col" class="px-6 py-3 font-medium hidden lg:flex">
                                 Text Content
@@ -48,6 +53,9 @@
                         @forelse ($banners as $banner)
                             <tr class="bg-white hover:bg-gray-100">
                                 <td class="px-6 py-4">
+                                    {{ $banner->order ?? '-' }}
+                                </td>
+                                <td class="px-6 py-4">
                                     <img
                                         src="{{ $banner->image_url }}"
                                         class="w-24 h-14 object-cover rounded {{ $banner->image_url ? '' : 'hidden' }}"
@@ -56,6 +64,9 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ ucwords(str_replace('_', ' ', $banner->category)) }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $banner->link }}
                                 </td>
                                 <td class="px-6 py-4 hidden lg:flex">
                                     {{ $banner->text_content }}

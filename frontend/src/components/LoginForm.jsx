@@ -17,7 +17,7 @@ export default function LoginForm() {
                 {/* Image Section */}
                 <div className="relative w-full xl:block xl:w-1/2 min-h-[240px] sm:min-h-[300px] xl:min-h-[500px]">
                     <Image
-                        src="https://images.pexels.com/photos/34442266/pexels-photo-34442266.jpeg?auto=compress&cs=tinysrgb&w=1200&q=75"
+                        src="https://images.pexels.com/photos/31105185/pexels-photo-31105185.jpeg"
                         alt="Banner"
                         fill
                         sizes="(max-width: 1280px) 100vw, 50vw"

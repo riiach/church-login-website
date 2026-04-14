@@ -23,14 +23,14 @@
                         class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm text-gray-900 p-2.5"
                         autofocus
                     >
-                        <option value="" disabled>Select a category</option>
+                        <option value="" disabled {{ old('category', $banner->category) ? '' : 'selected' }}>Select a category</option>
                         <option value="weekly_scripture" {{ old('category', $banner->category) === 'weekly_scripture' ? 'selected' : '' }}>
                             Weekly Scripture
                         </option>
                         <option value="main" {{ old('category', $banner->category) === 'main' ? 'selected' : '' }}>
                             Main
                         </option>
-                        <option value="series" {{ old('category') === 'series' ? 'selected' : '' }}>
+                        <option value="series" {{ old('category', $banner->category) === 'series' ? 'selected' : '' }}>
                             Sermon > Series
                         </option>
                     </select>
@@ -47,6 +47,32 @@
                         placeholder="This field can be empty."
                     >{{ old('text_content', $banner->text_content) }}</textarea>
                     <x-input-error :messages="$errors->get('text_content')" class="mt-2" />
+                </div>
+
+                <div class="mt-4">
+                    <x-input-label for="link" :value="__('Link')" />
+                    <x-text-input
+                        id="link"
+                        name="link"
+                        rows="6"
+                        class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm text-gray-900 p-2.5"
+                        placeholder="This field can be empty."
+                        :value="old('link', $banner->link)"
+                    />
+                <x-input-error :messages="$errors->get('link')" class="mt-2" />
+                </div>
+
+                <div class="mt-4">
+                    <x-input-label for="order" :value="__('Display Order')" />
+                    <x-text-input
+                        id="order"
+                        name="order"
+                        type="number"
+                        class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm text-gray-900 p-2.5"
+                        placeholder="Lower numbers will be displayed first. This field can be empty."
+                        :value="old('order', $banner->order)"
+                    />
+                    <x-input-error :messages="$errors->get('order')" class="mt-2" />
                 </div>
 
                 <div class="mt-4">

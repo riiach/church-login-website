@@ -33,7 +33,7 @@ class BannerController extends Controller
 
     public function store(StoreBannerRequest $request)
     {
-        $data = $request->only(['category', 'text_content']);
+        $data = $request->only(['category', 'link', 'order', 'text_content']);
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('banners', 'public');
@@ -55,12 +55,14 @@ class BannerController extends Controller
     {
         $request->validate([
             'category' => ['required', 'string', 'max:255'],
+            'link' => ['nullable', 'string', 'max:255'],
+            'order' => ['nullable', 'integer'],
             'text_content' => ['nullable', 'string'],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
             'image_url' => ['nullable', 'url', 'max:2048'],
         ]);
 
-        $data = $request->only(['category', 'text_content']);
+        $data = $request->only(['category', 'link', 'order', 'text_content']);
         $image = $banner->image;
 
         if ($request->hasFile('image')) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from "@/hooks/auth"
@@ -8,9 +8,28 @@ import { usePathname } from "next/navigation";
 const NavbarDesktop = () => {
     const { user, logout } = useAuth();
     const pathname = usePathname();
+    const [heroReady, setHeroReady] = useState(false)
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+
+        const handleHeroLoaded = () => {
+            setTimeout(() => setHeroReady(true), 50) // small delay ensures animation
+        }
+
+        window.addEventListener("heroLoaded", handleHeroLoaded)
+
+        return () => window.removeEventListener("heroLoaded", handleHeroLoaded)
+    }, [])
 
     return (
-        <nav className="navbar px-8 xl:px-16 2xl:px-28">
+        <nav
+            className={`
+            navbar px-8 xl:px-16 2xl:px-28 fixed top-0 left-0 w-full z-50
+            transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]
+            ${mounted && heroReady ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"}
+        `}>
             <div className="w-auto h-full flex items-center overflow-y-hidden">
                 <Link href="/">
                     <div className="flex flex-row items-center gap-4">
