@@ -74,17 +74,30 @@ const Sermons = () => {
                     </h1>
                 }
                 description={
-                    <a href={'https://www.youtube.com/channel/UC8VgQsbpmNbZJuDEyAQpUcg?view_as=subscriber'}
-                       className="flex flex-row group overflow-hidden"
-                       target="_blank"
-                    >
-                        <p className="button-primary mr-2 group-hover:text-accent-text transition-all duration-300" >Go To Our Channel</p>
-                        <button className="button-tertiary group-hover:bg-foreground/10 group-hover:scale-103 stroke-2 fill-none stroke-foreground w-12 h-12" type="button">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6">
-                                <path d="M18 6L6 18M8 6h10v10"/>
+                    <div className="flex w-full items-end justify-end gap-3 pt-8 overflow-hidden ">
+                        <button
+                            type="button"
+                            onClick={() => scrollCards(-1)}
+                            disabled={currentPage === 0}
+                            className="button-tertiary h-12 w-12 stroke-2 fill-none stroke-foreground hover:bg-foreground/10 hover:scale-103 disabled:cursor-not-allowed disabled:opacity-40"
+                            aria-label="Scroll sermons left"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-5 w-5">
+                                <path d="M15 6 9 12l6 6" />
                             </svg>
                         </button>
-                    </a>
+                        <button
+                            type="button"
+                            onClick={() => scrollCards(1)}
+                            disabled={pageCount === 0 || currentPage >= pageCount - 1}
+                            className="button-tertiary h-12 w-12 stroke-2 fill-none stroke-foreground hover:bg-foreground/10 hover:scale-103 disabled:cursor-not-allowed disabled:opacity-40"
+                            aria-label="Scroll sermons right"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-5 w-5">
+                                <path d="m9 6 6 6-6 6" />
+                            </svg>
+                        </button>
+                    </div>
                 }
                 content={
                     <VideoCard
@@ -95,29 +108,18 @@ const Sermons = () => {
                     />
                 }
             />
-            <div className="flex w-full items-end justify-end gap-3 pt-8 overflow-hidden ">
-                <button
-                    type="button"
-                    onClick={() => scrollCards(-1)}
-                    disabled={currentPage === 0}
-                    className="button-tertiary h-12 w-12 stroke-2 fill-none stroke-foreground hover:bg-foreground/10 hover:scale-103 disabled:cursor-not-allowed disabled:opacity-40"
-                    aria-label="Scroll sermons left"
+            <div className="w-full h-auto flex justify-end">
+                <a href={'https://www.youtube.com/channel/UC8VgQsbpmNbZJuDEyAQpUcg?view_as=subscriber'}
+                   className="flex flex-row group overflow-hidden"
+                   target="_blank"
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-5 w-5">
-                        <path d="M15 6 9 12l6 6" />
-                    </svg>
-                </button>
-                <button
-                    type="button"
-                    onClick={() => scrollCards(1)}
-                    disabled={pageCount === 0 || currentPage >= pageCount - 1}
-                    className="button-tertiary h-12 w-12 stroke-2 fill-none stroke-foreground hover:bg-foreground/10 hover:scale-103 disabled:cursor-not-allowed disabled:opacity-40"
-                    aria-label="Scroll sermons right"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-5 w-5">
-                        <path d="m9 6 6 6-6 6" />
-                    </svg>
-                </button>
+                    <p className="button-primary mr-2 group-hover:text-accent-text transition-all duration-300" >Go To Our Channel</p>
+                    <button className="button-tertiary group-hover:bg-foreground/10 group-hover:scale-103 stroke-2 fill-none stroke-foreground w-12 h-12" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6">
+                            <path d="M18 6L6 18M8 6h10v10"/>
+                        </svg>
+                    </button>
+                </a>
             </div>
         </section>
     )

@@ -39,7 +39,7 @@ const Hero = () => {
     if (isLoading || sortedBanner.length === 0) return null
 
     return (
-        <section className="relative w-full h-[calc(100vh-5rem)] xl:h-[100vh] overflow-hidden">
+        <section className="relative w-full h-[84vh] mt-0 xl:mt-26 rounded-2xl overflow-hidden">
 
             {sortedBanner.map((item, i) => (
                 <div
@@ -64,11 +64,11 @@ const Hero = () => {
                         }}
                     />
 
-                    {/* Overlay (dark gradient for readability) */}
+                    {/* Overlay */}
                     <div className="absolute inset-0 bg-black/40" />
 
                     {/* Text + Link */}
-                    <div className="absolute top-6/12 xl:left-46 w-full xl:w-1/2 inset-0 z-10 flex flex-col items-start justify-center gap-4 py-4 px-8 text-center">
+                    <div className="absolute bottom-0 left-0 w-full inset-0 z-10 flex flex-col items-start justify-center gap-4 py-4 px-8 text-center">
                         
                         {item.text_content && (
                             <h1 className="text-white py-2 w-full text-left whitespace-pre-line">
@@ -96,7 +96,7 @@ const Hero = () => {
                     </div>
 
                     {/* Controls */}
-                    <div className="absolute right-6 xl:right-36 bottom-6 z-20 w-28 h-14 rounded-full bg-white/30 backdrop-blur-md inline-flex gap-4 items-center justify-center">
+                    <div className="absolute right-6 bottom-6 z-20 w-28 h-14 rounded-full bg-white/30 backdrop-blur-md inline-flex gap-4 items-center justify-center">
 
                         <button
                             onClick={prev}
