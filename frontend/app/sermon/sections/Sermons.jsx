@@ -3,12 +3,14 @@
 import React, { useEffect, useState } from 'react'
 import SectionTemplateTopBottom from "@/components/SectionTemplateTopBottom"
 import VideoCard from "@/components/VideoCard"
+import { useFirstPage } from '@/context/pageLoad'
 
 const Sermons = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [pageCount, setPageCount] = useState(0);
     const [pageDirection, setPageDirection] = useState(0);
     const [videosPerPage, setVideosPerPage] = useState(8);
+    const { firstPageLoaded } = useFirstPage();
 
     useEffect(() => {
         const mediaQuery = window.matchMedia("(max-width: 767px)");
@@ -65,7 +67,7 @@ const Sermons = () => {
     };
 
     return (
-        <section id="sermons" className="w-full h-auto flex flex-col py-4">
+        <section id="sermons" className={`${firstPageLoaded ? 'flex' : 'hidden'} w-full flex-col h-auto py-4`}>
             <SectionTemplateTopBottom
                 sectionTitle="PAST SERMONS"
                 title={

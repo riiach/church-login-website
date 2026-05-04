@@ -1,11 +1,12 @@
 "use client"
 
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import { useSweepInView } from '@/hooks/useSweepInView.js'
 import useBanner from "@/hooks/useBanner";
 import Image from "next/image";
 import Milestone from "@/components/Milestone";
 import useSeries from "@/hooks/useSeries"
+import { useFirstPage } from '@/context/pageLoad'
 
 const normalizeImageSrc = value => {
     if (typeof value !== "string") {
@@ -49,14 +50,12 @@ const Series = () => {
     {/* useSweepInView */}
     const { sectionRef, textRef } = useSweepInView();
     const [useNativeImage, setUseNativeImage] = useState(false);
+    const { setFirstPageLoaded } = useFirstPage();
 
     const { banner = [], isLoading: isBannerLoading } = useBanner("series");
     const { series = [], isLoading: isSeriesLoading } = useSeries();
 
-    if (isBannerLoading || isSeriesLoading) return <p>Loading...</p>;
-
     const seriesBanner = banner[0] ?? null;
-
     const imageSrc = normalizeImageSrc(seriesBanner?.image_url);
 
     const activeSeries = useMemo(() => {
@@ -80,6 +79,8 @@ const Series = () => {
             }) ?? null;
     }, [series]);
 
+    if (isBannerLoading || isSeriesLoading) return <p>Loading...</p>;
+
     return (
         <section id="series" className="flex w-full flex-col py-4 xl:h-screen xl:py-8" ref={sectionRef}>
             <div className="mt-4 flex w-full flex-col gap-4 xl:mt-20 xl:min-h-0 xl:h-full">
@@ -94,6 +95,9 @@ const Series = () => {
                             priority
                             unoptimized
                             onError={() => setUseNativeImage(true)}
+                            onLoadingComplete={() => {
+                            setFirstPageLoaded(true);
+                        }}
                         />
                     )}
                     {imageSrc && useNativeImage && (

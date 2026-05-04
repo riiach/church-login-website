@@ -4,11 +4,13 @@ import React, {useEffect, useState} from 'react'
 import SectionTemplateTopBottom from "@/components/SectionTemplateTopBottom";
 import { useSweepInView } from '@/hooks/useSweepInView.js'
 import MinistriesCard from "@/components/MinistriesCard";
+import { useFirstPage } from '@/context/pageLoad'
 
 const Promote = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [pageCount, setPageCount] = useState(3);
     const [pageDirection, setPageDirection] = useState(0);
+    const { firstPageLoaded } = useFirstPage();
 
     useEffect(() => {
         if (pageCount === 0) {
@@ -47,7 +49,7 @@ const Promote = () => {
     const { sectionRef, textRef } = useSweepInView();
 
     return (
-        <section id="promote" ref={sectionRef}>
+        <section id="promote" ref={sectionRef} className={`${firstPageLoaded ? 'block' : 'hidden'}`}>
             <SectionTemplateTopBottom
                 sectionTitle="MINISTRY"
                 title = {

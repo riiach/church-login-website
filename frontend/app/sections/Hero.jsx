@@ -4,11 +4,12 @@ import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import useBanner from '@/hooks/useBanner'
+import { useFirstPage } from '@/context/pageLoad'
 
 const Hero = () => {
     const { banner = [], isLoading } = useBanner('main')
     const [current, setCurrent] = useState(0)
-    const [isHeroLoaded, setIsHeroLoaded] = useState(false)
+    const { setFirstPageLoaded } = useFirstPage()
 
     const sortedBanner = [...banner].sort((a, b) => a.order - b.order)
 
@@ -56,11 +57,7 @@ const Hero = () => {
                         className="object-cover"
                         priority={i === 0}
                         onLoadingComplete={() => {
-                            if (i === 0) {
-                                setIsHeroLoaded(true)
-
-                                window.dispatchEvent(new Event("heroLoaded"))
-                            }
+                            setFirstPageLoaded(true);
                         }}
                     />
 
@@ -68,7 +65,7 @@ const Hero = () => {
                     <div className="absolute inset-0 bg-black/40" />
 
                     {/* Text + Link */}
-                    <div className="absolute bottom-0 left-0 w-full inset-0 z-10 flex flex-col items-start justify-center gap-4 py-4 px-8 text-center">
+                    <div className="absolute bottom-0 left-0 w-full inset-0 z-10 flex flex-col items-start justify-end gap-4 py-4 px-8 pb-24 text-center">
                         
                         {item.text_content && (
                             <h1 className="text-white py-2 w-full text-left whitespace-pre-line">

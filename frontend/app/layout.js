@@ -5,6 +5,8 @@ import {PCUserProvider} from "@/context/profile";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "next-themes";
 import Social from "@/components/Social";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -34,6 +36,7 @@ export default function RootLayout({ children }) {
                     <Social />
                     <main className="flex-1">
                         {children}
+                        <ToastContainer />
                     </main>
                     <Footer />
                 </div>

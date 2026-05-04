@@ -1,6 +1,7 @@
 import Series from './sections/Series';
 import Sermons from './sections/Sermons';
 import SectionNavigator from '@/components/SectionNavigator'
+import { FirstPageProvider } from "@/context/pageLoad";
 
 // app/sermon/page.js
 export const metadata = {
@@ -10,15 +11,17 @@ export const metadata = {
 
 export default function SermonPage() {
     return (
-        <div className="min-h-screen w-screen bg-background pt-0 px-8 xl:px-16 2xl:px-28">
-            <Series />
-            <Sermons />
-            <SectionNavigator
-                sections={[
-                    { id: "series", label: "Series" },
-                    { id: "sermons", label: "Sermons" },
-                ]}
-            />
-        </div>
+        <FirstPageProvider>
+            <div className="min-h-screen w-screen bg-background pt-0 px-8 xl:px-16 2xl:px-28">
+                <Series />
+                <Sermons />
+                <SectionNavigator
+                    sections={[
+                        { id: "series", label: "Series" },
+                        { id: "sermons", label: "Sermons" },
+                    ]}
+                />
+            </div>
+        </FirstPageProvider>
     );
 }

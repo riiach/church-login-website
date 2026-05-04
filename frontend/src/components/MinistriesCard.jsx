@@ -61,7 +61,7 @@ const MinistriesCard = ({ currentPage = 0 }) => {
 
                             {/* LABEL */}
                             <div className="absolute top-6 left-6 px-4 py-2 bg-black/30 border border-white rounded-full">
-                                <p className="text-white">{item.label}</p>
+                                <p className="text-white text-xs md:text-sm xl:text-base">{item.label}</p>
                             </div>
 
                             {/* TEXT */}
@@ -76,7 +76,7 @@ const MinistriesCard = ({ currentPage = 0 }) => {
                             >
                                 <h1
                                     className={`
-                                    text-white text-3xl pb-2 transition-all duration-500 ease-out
+                                    text-white text-lg xl:text-3xl pb-2 transition-all duration-500 ease-out
                                     ${isActive
                                         ? 'opacity-100 translate-y-0 delay-300'
                                         : 'opacity-0 translate-y-2 delay-0'}
@@ -87,7 +87,7 @@ const MinistriesCard = ({ currentPage = 0 }) => {
 
                                 <p
                                     className={`
-                                    text-white/80 text-sm transition-all duration-500 ease-out
+                                    text-white/80 text-xs md:text-sm transition-all duration-500 ease-out
                                     ${isActive
                                         ? 'opacity-100 translate-y-0 delay-500'
                                         : 'opacity-0 translate-y-2 delay-0'}

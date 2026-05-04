@@ -1,28 +1,17 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from 'react'
-import usePageLoaded from "@/hooks/usePageLoaded";
 
 const Social = () => {
     const socialRef = useRef(null);
     const [isVisible, setIsVisible] = useState(true);
+    const [mounted, setMounted] = useState(false);
 
-    const [heroReady, setHeroReady] = useState(false)
-    const [mounted, setMounted] = useState(false)
-
-    const shouldShow = mounted && heroReady && isVisible;
+    const shouldShow = mounted && isVisible;
 
     useEffect(() => {
-        setMounted(true)
-
-        const handleHeroLoaded = () => {
-            setTimeout(() => setHeroReady(true), 700)
-        }
-
-        window.addEventListener("heroLoaded", handleHeroLoaded)
-
-        return () => window.removeEventListener("heroLoaded", handleHeroLoaded)
-    }, [])
+        setMounted(true);
+    }, []);
 
     useEffect(() => {
             // Prevent scrollbars caused by fixed-positioned children overflowing

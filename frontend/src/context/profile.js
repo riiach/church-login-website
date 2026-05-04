@@ -1,3 +1,4 @@
+// This context is used to store the authenticated user's profile information and loading state.
 "use client";
 
 import { createContext, useContext, useState, useEffect } from "react";
@@ -11,7 +12,7 @@ const PCUserContext = createContext(null);
 export const PCUserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    const router = useRouter(); // <-- get the router here
+    const router = useRouter();
 
     const fetchUser = async () => {
         try {
@@ -48,5 +49,5 @@ export const PCUserProvider = ({ children }) => {
     );
 };
 
-// Hook to use the context in any component
+// Use the context
 export const usePCUser = () => useContext(PCUserContext);

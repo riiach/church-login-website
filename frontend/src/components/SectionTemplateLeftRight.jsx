@@ -21,7 +21,7 @@ const SectionTemplateLeftRight = ( { sectionTitle, title, description, link, con
                         {description}
                     </div>
 
-                    <div className="mt-4">
+                    <div className="mt-4 w-full">
                         {link}
                     </div>
 
