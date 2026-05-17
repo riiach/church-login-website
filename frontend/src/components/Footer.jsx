@@ -5,7 +5,7 @@ import ThemeToggle from "./ThemeToggle";
 
 const Footer = () => {
     return (
-        <section id="footer" className="w-full min-h-100 flex flex-row flex-wrap bg-accent mt-8 xl:mt-46 px-8 2xl:px-24 py-12 gap-8 xl:gap-0">
+        <section id="footer" className="w-full min-h-100 flex flex-row flex-wrap bg-accent mt-8 xl:mt-46 px-8 2xl:px-24 py-12 gap-8 xl:gap-0 rounded-t-3xl">
             <div className="w-full xl:w-1/3 flex flex-col gap-4 xl:gap-12 items-start">
                 <h1 className="py-2 text-white">
                     Across Cultures

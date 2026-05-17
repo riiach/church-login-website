@@ -65,7 +65,7 @@ const Hero = () => {
                     <div className="absolute inset-0 bg-black/40" />
 
                     {/* Text + Link */}
-                    <div className="absolute bottom-0 left-0 w-full inset-0 z-10 flex flex-col items-start justify-end gap-4 py-4 px-8 pb-24 text-center">
+                    <div className="absolute bottom-0 left-0 xl:left-24 w-full inset-0 z-10 flex flex-col items-start justify-end gap-4 py-4 px-8 pb-24 text-center">
                         
                         {item.text_content && (
                             <h1 className="text-white py-2 w-full text-left whitespace-pre-line">

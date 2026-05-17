@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '@/hooks/auth';
 
 const navItems = [
-    { href: '/', label: 'Our Mission' },
+    { href: '/about', label: 'About Us' },
     { href: '/', label: 'Visit Us' },
     { href: '/sermon', label: 'Sermons' },
     { href: '/', label: 'Join Us' },

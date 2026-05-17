@@ -70,7 +70,7 @@ export default function Contact() {
                                 type="text"
                                 {...register("name")}
                                 className={errors.name ? "border-red-500" 
-                                    : "border border-foreground px-6 py-4 w-full xl:w-1/2 rounded-full text-sm md:text-base"
+                                    : "border border-foreground px-6 py-4 w-full rounded-2xl text-sm md:text-base"
                                 }
                                 placeholder="Your Name"
                             />
@@ -84,7 +84,7 @@ export default function Contact() {
                                 type="email"
                                 {...register("email")}
                                 className={errors.email ? "border-red-500"
-                                    : "border border-foreground px-6 py-4 w-full xl:w-1/2 rounded-full text-sm md:text-base"
+                                    : "border border-foreground px-6 py-4 w-full rounded-2xl text-sm md:text-base"
                                 }
                                 placeholder="Your Email"
                             />
@@ -98,7 +98,7 @@ export default function Contact() {
                                 type="text"
                                 {...register("keyword")}
                                 className={errors.keyword ? "border-red-500" 
-                                    : "border border-foreground px-6 py-4 w-full xl:w-1/2 rounded-full text-sm md:text-base"
+                                    : "border border-foreground px-6 py-4 w-full rounded-2xl text-sm md:text-base"
                                 }
                                 placeholder="Subject"
                             />
@@ -111,7 +111,7 @@ export default function Contact() {
                                 id="message"
                                 {...register("message")}
                                 className={errors.message ? "border-red-500" 
-                                    : "border border-foreground px-6 py-4 w-full xl:w-1/2 rounded-2xl text-sm md:text-base"
+                                    : "border border-foreground px-6 py-4 w-full rounded-2xl text-sm md:text-base"
                                 }
                                 placeholder="Your Message"
                                 rows={4}
@@ -120,7 +120,7 @@ export default function Contact() {
                                 <p className="text-red-500 text-sm">{errors.message.message}</p>
                             )}
                         </div>
-                        <div className="w-full xl:w-1/2 flex justify-end py-2 px-2">
+                        <div className="w-full flex justify-end py-2 px-2">
                             <button type="submit" disabled={isSubmitting} className="bg-foreground rounded-full hover:scale-103 stroke-2 fill-none stroke-foreground w-12 h-12 flex items-center justify-center transition-all duration-300">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6 stroke-background">
                                     <path d="M18 6L6 18M8 6h10v10"/>

@@ -43,8 +43,8 @@ const NavbarDesktop = () => {
             </div>
             <ul className="flex justify-center items-center gap-6 2xl:gap-8 w-auto h-full space-x-4 font-inter text-sm 2xl:text-base">
 
-                <li className={`transition-all duration-300 ${pathname === "/" ? "text-accent-text" : "hover:text-accent-text"}`}>
-                    <Link href="/">Our Mission</Link>
+                <li className={`transition-all duration-300 ${pathname === "/about" ? "text-accent-text" : "hover:text-accent-text"}`}>
+                    <Link href="/about">About Us</Link>
                 </li>
 
                 <li className={`transition-all duration-300 ${pathname === "/visit" ? "text-accent-text" : "hover:text-accent-text"}`}>
